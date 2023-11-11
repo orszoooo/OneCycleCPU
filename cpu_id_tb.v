@@ -9,7 +9,7 @@ parameter REG_F_SEL_SIZE = 4;
 parameter IN_B_SEL_SIZE = 2;
 
 reg [WIDTH-1:0] IN;
-wire RST;
+wire PC_RST;
 wire PC_LD;
 wire [IWIDTH-2:0] ALU_OUT;
 wire [(WIDTH-IWIDTH)-1:0] IMM;
@@ -33,7 +33,7 @@ cpu_id #(
 )
 UUT(
     .IN(IN),
-    .RST(RST),
+    .PC_RST(PC_RST),
     .PC_LD(PC_LD),
     .ALU_OUT(ALU_OUT),
     .IMM(IMM),

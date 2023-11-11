@@ -8,7 +8,7 @@ module cpu_id #(
     parameter IN_B_SEL_SIZE = 2 // 00 - IMM, 01 - REG_F, 10 - DATA_MEM
 )(
     IN,
-    RST,
+    PC_RST,
     PC_LD,
     ALU_OUT,
     IMM,
@@ -27,7 +27,7 @@ module cpu_id #(
 
 input [WIDTH-1:0] IN;
 
-output reg RST;
+output reg PC_RST;
 output reg PC_LD;
 output reg [IWIDTH-2:0] ALU_OUT; //4 bit
 output reg [(WIDTH-IWIDTH)-1:0] IMM;
@@ -55,7 +55,7 @@ output reg [(WIDTH-IWIDTH)-1:0] BASE_REG_DATA;
 always @(*) begin
     ALU_OUT = IN[WIDTH-2:(WIDTH-IWIDTH)];
     
-    RST = 1'b0;
+    PC_RST = 1'b0;
     PC_LD = 1'b0;
     EN_ACC = 1'b0;
     JMP_MODE = 1'b0;
@@ -75,7 +75,7 @@ always @(*) begin
     BASE_REG_DATA = {(WIDTH-IWIDTH){1'b0}};
 
     if(IN[WIDTH-1:(WIDTH-IWIDTH)] == `RST) begin
-        RST = 1'b1;
+        PC_RST = 1'b1;
     end
     else if(IN[WIDTH-1:(WIDTH-IWIDTH)] == `LD) begin
         D_MEM_ADDR = IN[(WIDTH-IWIDTH)-1:0];

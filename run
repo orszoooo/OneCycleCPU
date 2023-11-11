@@ -1,0 +1,8 @@
+rm -f cpu_sim
+rm -f cpu_sim.vcd
+#iverilog -Wall -s cpu_pc_tb -o cpu_sim cpu_pc_tb.v cpu_pc.v 
+#iverilog -Wall -s cpu_id_tb -o cpu_sim cpu_id_tb.v cpu_id.v 
+#iverilog -Wall -s cpu_id_tb -o cpu_sim cpu_id_tb.v rom.v cpu_pc.v cpu_id.v cpu_main.v acc.v alu.v alu_add.v alu_sub.v reg_f.v data_mem.v
+iverilog -Wall -s cpu_main_tb -o cpu_sim cpu_main_tb.v rom.v cpu_pc.v cpu_id.v cpu_main.v
+vvp cpu_sim
+

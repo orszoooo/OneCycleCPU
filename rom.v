@@ -23,12 +23,12 @@ always @(*) begin
         8'h07: DATA = {`ADDR,8'h01};
         8'h08: DATA = {`STR,8'h01};
         8'h09: DATA = {`BAR,8'h09};
-        8'h0A: DATA = {`JMP, 8'h03};
+        8'h0A: DATA = {`JMPO, 8'h03};
         8'h0B: DATA = `RST;
         8'h0C: DATA = {`JMP,8'h0E};
         8'h0D: DATA = `RST;
-        8'h0E: DATA = `NOP;
-        8'h0F: DATA = `NOP;
+        8'h0E: DATA = {`JMP,8'h05};
+        8'h0F: DATA = `RST;
         default: DATA = `RST;
     endcase
 end

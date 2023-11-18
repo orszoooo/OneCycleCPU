@@ -8,7 +8,8 @@ rm -f cpu_sim.vcd
 #iverilog -Wall -s cpu_main_tb -o cpu_sim cpu_main_tb.v rom.v cpu_pc.v cpu_id.v cpu_main.v
 #iverilog -Wall -s cpu_ctrl_tb -o cpu_sim cpu_ctrl_tb.v cpu_ctrl.v cpu_pc.v rom.v cpu_id.v cpu_jmp.v cpu_lr.v alu_add.v 
 
-iverilog -Wall -s reg_f_tb -o cpu_sim reg_f_tb.v reg_f.v 
+#iverilog -Wall -s reg_f_tb -o cpu_sim reg_f_tb.v reg_f.v 
+iverilog -Wall -s data_mem_tb -o cpu_sim data_mem_tb.v data_mem.v 
 
 vvp cpu_sim
 

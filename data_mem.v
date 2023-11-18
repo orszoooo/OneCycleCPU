@@ -1,7 +1,7 @@
 `timescale 1ns/100ps
 
 module data_mem # (
-    parameter WIDTH = 8,
+    parameter WIDTH = 8
 )(  
     CLK,
     EN,
@@ -9,7 +9,7 @@ module data_mem # (
     D_IN,
     D_OUT
 );
-input EN;
+input CLK, EN;
 input [WIDTH-1:0] ADDR;
 input [WIDTH-1:0] D_IN;
 output reg [WIDTH-1:0] D_OUT;
@@ -20,6 +20,7 @@ always @(posedge CLK) begin
     if(EN) begin
         MEM[ADDR] <= D_IN;
     end
+
     D_OUT <= MEM[ADDR];
 end
 

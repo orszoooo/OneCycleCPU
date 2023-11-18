@@ -2,22 +2,18 @@
 
 module data_mem_tb;
 
-parameter AW = 4;
-parameter DW = 4;
+parameter W = 8;
 reg CLK, EN, WR, RD;
-reg [AW-1:0] ADDR;
-reg [DW-1:0] D_IN;
-wire [DW-1:0] D_OUT;
+reg [W-1:0] ADDR;
+reg [W-1:0] D_IN;
+wire [W-1:0] D_OUT;
 integer i;
 
 data_mem #(
-    .AWIDTH(AW),
-    .DWIDTH(DW)
+    .WIDTH(W)
 ) UUT (
     .CLK(CLK),
     .EN(EN),
-    .WR(WR),
-    .RD(RD),
     .ADDR(ADDR),
     .D_IN(D_IN),
     .D_OUT(D_OUT)
@@ -25,49 +21,28 @@ data_mem #(
 
 initial begin
     $display("Simulation of %m started.");
-    ADDR = 2'b00;
-    D_IN = 4'b0000;
-    EN = 1'b0;
-    WR = 1'b1;
-    RD = 1'b0;
-    WAIT(5);
-
+    ADDR = 8'h00;
+    D_IN = 8'h00;
     EN = 1'b1;
     WAIT(5);
 
-    for(i = 0; i < $pow(2,AW)-1; i++) begin
-        ADDR = ADDR + 2'd1;
-        D_IN = D_IN + 'd1;
+    for(i = 0; i < $pow(2,W)-1; i++) begin
+        ADDR = ADDR + 8'h01;
+        D_IN = D_IN + 8'h05;
         WAIT(5);
     end
 
-    ADDR = 2'b00;
-    D_IN = 4'b0000;
-    EN = 1'b1;
-    WR = 1'b0;
-    RD = 1'b1;
-    WAIT(20);
-
-    for(i = 0; i < $pow(2,AW)-1; i++) begin
-        ADDR = ADDR + 2'd1;
-        WAIT(5);
-    end
-
-    WAIT(10);   
-
-    ADDR = 2'b00;
-    D_IN = 4'b0000;
+    ADDR = 8'h00;
+    D_IN = 8'h00;
     EN = 1'b0;
-    WR = 1'b0;
-    RD = 1'b1;
     WAIT(20);
 
-    for(i = 0; i < $pow(2,AW)-1; i++) begin
-        ADDR = ADDR + 2'd1;
+    for(i = 0; i < $pow(2,W)-1; i++) begin
+        ADDR = ADDR + 8'h01;
         WAIT(5);
     end
 
-    WAIT(10);  
+    WAIT(50);   
     $finish;
 end
 

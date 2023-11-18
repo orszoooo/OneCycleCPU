@@ -16,7 +16,7 @@ module cpu_ctrl #(
     D_MEM_ADDR,
     D_MEM_ADDR_MODE,  
     EN_D_MEM,
-    EN_ACC,
+    EN_ACC
 );
 
 input CLK;

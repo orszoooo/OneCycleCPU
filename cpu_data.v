@@ -2,6 +2,7 @@
 
 module cpu_data #(
     parameter WIDTH = 8,
+    parameter IWIDTH = 5,
     parameter REG_SIZE = 9,
     parameter REG_F_SEL_SIZE = 4,
     parameter IN_B_SEL_SIZE = 2
@@ -41,10 +42,9 @@ wire [WIDTH-1:0] IN_B;
 
 //DATA_MEM ADDRESS SOURCE CTRL
 input D_MEM_ADDR_MODE; //0 - ADDR from operand, 1 - ADDR form R0-R7
-input [WIDTH-1:0] D_MEM_ADDR;
 wire [WIDTH-1:0] DATA_MEM_ADDR_IN;
 
-input ALU_OUT;
+input [IWIDTH-2:0] ALU_OUT;
 input EN_ACC;   
 
 wire [WIDTH-1:0] DATA_BUS;
@@ -59,7 +59,7 @@ reg_f_module (
     .EN(EN_REG_F),
     .SEL(REG_F_SEL),
     .PORT(PORT),
-    .OUT(REG_F_OUT),
+    .OUT(REG_F_OUT)
 );
 
 data_mem #(.WIDTH(WIDTH))

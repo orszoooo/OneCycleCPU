@@ -2,9 +2,11 @@
 
 module cpu_main_tb;
 reg CLK;
+wire [7:0] PORT;
 
 cpu_main UUT (
-    .CLK(CLK)
+    .CLK(CLK),
+	.PORT(PORT)
 );
 
 initial begin

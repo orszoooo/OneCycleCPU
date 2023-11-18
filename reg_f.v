@@ -19,26 +19,23 @@ input [$clog2(SIZE)-1:0] SEL;
 output reg [WIDTH-1:0] OUT;
 
 reg [WIDTH-1:0] REG_FILE [SIZE:0];
-reg PORT_EN;
+reg PORT_EN = 1'b1;
 
-assign PORT = (PORT_EN)? IN : {WIDTH{1'bz}};
+assign PORT = (PORT_EN) ? IN : {WIDTH{1'bz}};
 
 always@(posedge CLK) begin
     if(EN) begin
-        if(SEL == 4'b1111) begin //To write to PORT SEL == 4'b1111 {$clog2(SIZE){1'b1}
+        if(SEL == {$clog2(SIZE){1'b1}}) begin //To write to PORT SEL == 4'b1111 {$clog2(SIZE){1'b1}
             PORT_EN <= 1'b1;
-            REG_FILE[SEL] <= IN;
             REG_FILE[SIZE-1] <= IN;
         end
-        else begin
-            PORT_EN <= 1'b0; 
-            REG_FILE[SEL] <= IN;
-        end
+        REG_FILE[SEL] <= IN;
+    end 
+    else begin
+        PORT_EN <= 1'b0;
+        REG_FILE[SIZE-1] <= PORT; //To read PORT SEL == 4'b1000 - nineth reg
+        OUT <= REG_FILE[SEL];
     end
-
-
-    REG_FILE[SIZE-1] <= PORT; //To read PORT SEL == 4'b1000 - nineth reg
-    OUT <= REG_FILE[SEL];
 end
 
 endmodule 

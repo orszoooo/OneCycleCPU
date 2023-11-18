@@ -52,11 +52,16 @@ initial begin
     SEL = 4'h8; //PORT Read
     WAIT(5);   
 
+    EN = 1'b1;
     IN = 8'hDC;
     PORT_REG = 8'hZZ;
     SEL = 4'hF; //PORT Write
-    WAIT(5);  
+    WAIT(1);
+    EN = 1'b1;
 
+    WAIT(5);  
+    $display("PORT_RECV: %0h", PORT_RECV);
+    $display("PORT: %0h", PORT);
     WAIT(10); 
     $finish;
 end

@@ -1,8 +1,7 @@
 `timescale 1ns/100ps
 
 module alu #(
-    parameter IWIDTH = 4,
-    parameter DWIDTH = 4
+    parameter DWIDTH = 8
 )(
     IN_INSTR,
     IN_A,
@@ -10,6 +9,7 @@ module alu #(
     OUT
 );
 
+parameter IWIDTH = 4;
 input [IWIDTH-1:0] IN_INSTR;
 input [DWIDTH-1:0] IN_A;
 input [DWIDTH-1:0] IN_B;

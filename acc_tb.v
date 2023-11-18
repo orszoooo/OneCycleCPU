@@ -2,7 +2,7 @@
 
 module acc_tb;
 parameter W = 4;
-reg CLK, CE;
+reg CLK, EN;
 reg [W-1:0] IN;
 wire [W-1:0] OUT;
 
@@ -10,26 +10,26 @@ acc #(
     .WIDTH(W)) 
 UUT (
     .CLK(CLK),
-    .CE(CE),
+    .CE(EN),
     .IN(IN),
     .OUT(OUT)
 );
 
 initial begin
     $display("Simulation of %m started.");
-    CE = 1'b0;
+    EN = 1'b0;
     IN = 4'b0101;
     WAIT(1);
-    CE = 1'b1;
+    EN = 1'b1;
     WAIT(1);
-    CE = 1'b0;
+    EN = 1'b0;
     WAIT(1);
-    CE = 1'b1;
+    EN = 1'b1;
     IN = 4'b1111;
     WAIT(1);
     IN = 4'b0000;
     WAIT(2);
-    CE = 1'b0;
+    EN = 1'b0;
     WAIT(10);
     $finish;
 end

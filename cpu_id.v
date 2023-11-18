@@ -4,7 +4,7 @@
 module cpu_id #(
     parameter WIDTH = 13,
     parameter IWIDTH = 5, //Instruction width. Widht of data part -> WIDTH-IWIDTH i.e 13 - 5 = 8 bit Data width
-    parameter REG_F_SEL_SIZE = 4, //8 reg + PORT = 9 -> 4 bit
+    parameter REG_F_SEL_SIZE = 4, //8 reg + PORT -> 4 bit
     parameter IN_B_SEL_SIZE = 2 // 00 - IMM, 01 - REG_F, 10 - DATA_MEM
 )(
     IN,

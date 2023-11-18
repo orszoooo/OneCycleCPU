@@ -8,7 +8,9 @@ parameter S = 9;
 reg [W-1:0] IN;
 reg EN;
 reg [$clog2(S)-1:0] SEL;
-wire [W-1:0] PORT
+wire [W-1:0] PORT;
+reg [W-1:0] PORT_REG;
+wire [W-1:0] PORT_RECV;
 wire [W-1:0] OUT;
 integer i;
 
@@ -24,45 +26,36 @@ reg_f #(
     .OUT(OUT)
 );
 
+assign PORT = PORT_REG;
+assign PORT_RECV = PORT;
+
 initial begin
     $display("Simulation of %m started.");
-    IN = 4'b0001;
+    IN = 8'hDE;
     EN = 1'b0;
-    SEL = 3'b000;
+    SEL = 4'h0; //R0
+    PORT_REG = 8'hAC;
     WAIT(5);
 
     EN = 1'b1;
-    WAIT(5);
-    WR = 1'b1;
-    for(i = 0; i < S-1; i++) begin
-        SEL = SEL + 3'd1;
-        IN = IN + 4'd1;
-        WAIT(5);
-    end
-
-    SEL = 3'b000;
-    IN = 4'b0000;
-    EN = 1'b1;
-    WR = 1'b0;
-    WAIT(20);
-
-    for(i = 0; i < S; i++) begin
-        SEL = SEL + 4'd1;
-        WAIT(5);
-    end
-
-    WAIT(10);   
-
-    SEL = 3'b000;
-    IN = 4'b0000;
+    WAIT(1);
     EN = 1'b0;
-    WR = 1'b0;
-    WAIT(20);
+    WAIT(5);
 
-    for(i = 0; i < S; i++) begin
-        SEL = SEL + 3'd1;
-        WAIT(5);
-    end
+    IN = 8'hAB;
+    EN = 1'b1;
+    SEL = 4'h3; //R3
+    WAIT(1);
+    EN = 1'b0;
+    WAIT(5);   
+
+    SEL = 4'h8; //PORT Read
+    WAIT(5);   
+
+    IN = 8'hDC;
+    PORT_REG = 8'hZZ;
+    SEL = 4'hF; //PORT Write
+    WAIT(5);  
 
     WAIT(10); 
     $finish;

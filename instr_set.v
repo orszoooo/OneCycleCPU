@@ -23,6 +23,9 @@
 `define SUBR 5'h14
 `define ADDR 5'h15 
 
+`define CALL 5'h16
+`define RET 5'h17
+
 `define LDI 5'h1A //Load immediate, differentiates from LD only in fifth bit
 `define LDAR 5'h1D //DATA_MEM address read from R0-R7
 `define NOP 5'h1E

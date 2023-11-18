@@ -20,10 +20,11 @@ wire [(WIDTH-IWIDTH)-1:0] D_MEM_ADDR;
 wire D_MEM_ADDR_MODE;
 wire EN_D_MEM;
 wire EN_ACC;    
-wire JMP_MODE;   
+wire [1:0] JMP_MODE;   
 wire [(WIDTH-IWIDTH)-1:0] BASE_REG_OFFSET;
 wire BASE_REG_LD;
 wire [(WIDTH-IWIDTH)-1:0] BASE_REG_DATA;
+wire LR_LD;
 
 cpu_id #(
     .WIDTH(WIDTH),
@@ -47,7 +48,8 @@ UUT(
     .JMP_MODE(JMP_MODE),   
     .BASE_REG_OFFSET(BASE_REG_OFFSET),
     .BASE_REG_LD(BASE_REG_LD),
-    .BASE_REG_DATA(BASE_REG_DATA)    
+    .BASE_REG_DATA(BASE_REG_DATA),
+    .LR_LD(LR_LD)  
 );
 
 initial begin
@@ -84,7 +86,13 @@ initial begin
     WAIT(10);
     IN = {`SUBR, 8'h06};
     WAIT(10);
+    IN = {`CALL, 8'h06};
+    WAIT(10);
     IN = {`NOP, 8'h00};
+    WAIT(10);
+    IN = {`CALL, 8'h06};
+    WAIT(10);
+    IN = {`RET, 8'h00};
     WAIT(50);
     $finish;
 end

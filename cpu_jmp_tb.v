@@ -2,10 +2,12 @@
 
 module cpu_jmp_tb;
 parameter WIDTH = 8;
-reg CLK, JMP_MODE;
+reg CLK;
+reg [1:0] JMP_MODE;
 reg [WIDTH-1:0] BASE_REG_OFFSET;
 reg BASE_REG_LD;
 reg [WIDTH-1:0] BASE_REG_DATA;
+reg [WIDTH-1:0] LR_ADDRESS;
 wire [WIDTH-1:0] ADDRESS_OUT;
 
 cpu_jmp #(.WIDTH(WIDTH))
@@ -14,15 +16,17 @@ UUT (
     .BASE_REG_OFFSET(BASE_REG_OFFSET),
     .BASE_REG_LD(BASE_REG_LD),
     .BASE_REG_DATA(BASE_REG_DATA),
+    .LR_ADDRESS(LR_ADDRESS),
     .ADDRESS_OUT(ADDRESS_OUT)
 );
 
 initial begin
     $display("Simulation of %m started.");
-    JMP_MODE = 1'b0;
+    JMP_MODE = 2'b00;
     BASE_REG_OFFSET = 8'h00;
     BASE_REG_LD = 1'b0;
     BASE_REG_DATA = 8'h00;
+    LR_ADDRESS = 8'h00;
     WAIT(2);
 
     BASE_REG_OFFSET = 8'hA7;
@@ -40,15 +44,18 @@ initial begin
     BASE_REG_DATA = 8'h00;
     WAIT(2);
 
-    JMP_MODE = 1'b1;
+    JMP_MODE = 2'b01;
     BASE_REG_OFFSET = 8'hA7;
     WAIT(2);
 
     BASE_REG_OFFSET = 8'h12;
     WAIT(2);
 
-    JMP_MODE = 1'b0;
-
+    JMP_MODE = 2'b11;
+    BASE_REG_OFFSET = 8'h01;
+    WAIT(2);    
+    LR_ADDRESS = 8'h69;
+    
     WAIT(20);
     $finish;
 end

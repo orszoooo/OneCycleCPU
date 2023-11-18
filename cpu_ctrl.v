@@ -23,11 +23,13 @@ input CLK;
 wire PC_RST, PC_LD; 
 wire [(WIDTH-IWIDTH)-1:0] ROM_ADDR;
 wire [WIDTH-1:0] ROM_DATA;
-wire JMP_MODE;   
+wire [1:0] JMP_MODE;   
 wire [(WIDTH-IWIDTH)-1:0] BASE_REG_OFFSET;
 wire BASE_REG_LD;
 wire [(WIDTH-IWIDTH)-1:0] BASE_REG_DATA;
 wire [(WIDTH-IWIDTH)-1:0] JMP_ADDRESS_PC;
+wire LR_LD;
+wire [(WIDTH-IWIDTH)-1:0] LR_JMP_ADDRESS;
 
 output [IWIDTH-2:0] ALU_OUT; //4 bit
 output [(WIDTH-IWIDTH)-1:0] IMM; //Immediate data
@@ -72,7 +74,8 @@ id_module (
     .JMP_MODE(JMP_MODE),   
     .BASE_REG_OFFSET(BASE_REG_OFFSET),
     .BASE_REG_LD(BASE_REG_LD),
-    .BASE_REG_DATA(BASE_REG_DATA)  
+    .BASE_REG_DATA(BASE_REG_DATA),
+    .LR_LD(LR_LD)
 );
 
 cpu_jmp #(.WIDTH((WIDTH-IWIDTH)))
@@ -81,8 +84,16 @@ jmp_module (
     .BASE_REG_OFFSET(BASE_REG_OFFSET),
     .BASE_REG_LD(BASE_REG_LD),
     .BASE_REG_DATA(BASE_REG_DATA),
+    .LR_ADDRESS(LR_JMP_ADDRESS),
     .ADDRESS_OUT(JMP_ADDRESS_PC)
 );
 
+cpu_lr #(.WIDTH((WIDTH-IWIDTH)))
+lr_module (
+    .CLK(CLK),
+    .LR_LD(LR_LD),
+    .LR_DATA(ROM_ADDR),
+    .LR_OUT(LR_JMP_ADDRESS)   
+);
 
 endmodule

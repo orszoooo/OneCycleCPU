@@ -22,7 +22,8 @@ module cpu_id #(
     JMP_MODE,   
     BASE_REG_OFFSET,
     BASE_REG_LD,
-    BASE_REG_DATA
+    BASE_REG_DATA,
+    LR_LD
 );
 
 input [WIDTH-1:0] IN;
@@ -43,12 +44,13 @@ output reg D_MEM_ADDR_MODE; //0 - ADDR from operand, 1 - ADDR form R0-R7
 output reg EN_D_MEM;
 
 output reg EN_ACC;
-output reg JMP_MODE; // 0 - absolute, 1 - relative to base address register
+output reg [1:0] JMP_MODE; // 00 - absolute, 01 - relative to base address register, 11 - CALL
 
 //BASE ADDRESS REGISTER
 output reg [(WIDTH-IWIDTH)-1:0] BASE_REG_OFFSET;
 output reg BASE_REG_LD;
 output reg [(WIDTH-IWIDTH)-1:0] BASE_REG_DATA;
+output reg LR_LD;
 
 //TO DO: STACK, MAIN REGISTER
 
@@ -58,7 +60,7 @@ always @(*) begin
     PC_RST = 1'b0;
     PC_LD = 1'b0;
     EN_ACC = 1'b0;
-    JMP_MODE = 1'b0;
+    JMP_MODE = 2'b00;
     
     IN_B_SEL = 2'b10; //DATA_MEM
     IMM = {(WIDTH-IWIDTH){1'b0}};
@@ -73,6 +75,7 @@ always @(*) begin
     BASE_REG_OFFSET = {(WIDTH-IWIDTH){1'b0}};
     BASE_REG_LD = 1'b0;
     BASE_REG_DATA = {(WIDTH-IWIDTH){1'b0}};
+    LR_LD = 1'b0;
 
     if(IN[WIDTH-1:(WIDTH-IWIDTH)] == `RST) begin
         PC_RST = 1'b1;
@@ -101,12 +104,12 @@ always @(*) begin
     end
     else if(IN[WIDTH-1:(WIDTH-IWIDTH)] == `JMP) begin
         BASE_REG_OFFSET = IN[(WIDTH-IWIDTH)-1:0];
-        JMP_MODE = 1'b0;
+        JMP_MODE = 2'b00;
         PC_LD = 1'b1;
     end
     else if(IN[WIDTH-1:(WIDTH-IWIDTH)] == `JMPO) begin
         BASE_REG_OFFSET = IN[(WIDTH-IWIDTH)-1:0];
-        JMP_MODE = 1'b1;
+        JMP_MODE = 2'b01;
         PC_LD = 1'b1;
     end
     else if((IN[WIDTH-1:(WIDTH-IWIDTH)] == `XORR) ||
@@ -117,6 +120,17 @@ always @(*) begin
     ) begin
         REG_F_SEL = IN[REG_F_SEL_SIZE-1:0]; 
         IN_B_SEL = 2'b01;
+    end
+    else if(IN[WIDTH-1:(WIDTH-IWIDTH)] == `CALL) begin
+        LR_LD = 1'b1;
+        BASE_REG_OFFSET = IN[(WIDTH-IWIDTH)-1:0];
+        JMP_MODE = 2'b00;
+        PC_LD = 1'b1;
+    end
+    else if(IN[WIDTH-1:(WIDTH-IWIDTH)] == `RET) begin
+        JMP_MODE = 2'b11;
+        BASE_REG_OFFSET = {{(WIDTH-1){1'b0}},{1'b1}};
+        PC_LD = 1'b1;
     end
     else if(IN[WIDTH-1:(WIDTH-IWIDTH)] == `LDI) begin
         IMM = IN[(WIDTH-IWIDTH)-1:0];

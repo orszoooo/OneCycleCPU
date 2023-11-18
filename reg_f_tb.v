@@ -3,11 +3,12 @@
 module reg_f_tb;
 
 reg CLK;
-parameter W = 4;
-parameter S = 8;
+parameter W = 8;
+parameter S = 9;
 reg [W-1:0] IN;
-reg EN, WR;
+reg EN;
 reg [$clog2(S)-1:0] SEL;
+wire [W-1:0] PORT
 wire [W-1:0] OUT;
 integer i;
 
@@ -15,11 +16,11 @@ reg_f #(
     .WIDTH(W),
     .SIZE(S)
 ) UUT (
+    .CLK(CLK),
     .IN(IN),
     .EN(EN),
-    .WR(WR),
-    .CLK(CLK),
     .SEL(SEL),
+    .PORT(PORT),
     .OUT(OUT)
 );
 
@@ -27,7 +28,6 @@ initial begin
     $display("Simulation of %m started.");
     IN = 4'b0001;
     EN = 1'b0;
-    WR = 1'b0;
     SEL = 3'b000;
     WAIT(5);
 

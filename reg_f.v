@@ -2,7 +2,7 @@
 
 module reg_f #(
     parameter WIDTH = 8,
-    parameter SIZE = 8
+    parameter SIZE = 9
 )(
     CLK,
     IN,
@@ -15,7 +15,7 @@ module reg_f #(
 input [WIDTH-1:0] IN;
 input [WIDTH-1:0] PORT;
 input EN, CLK;
-input [$clog2(SIZE)-1:0] SEL;
+input [$clog2(SIZE-1)-1:0] SEL;
 output reg [WIDTH-1:0] OUT;
 
 reg [WIDTH-1:0] REG_FILE [SIZE:0];

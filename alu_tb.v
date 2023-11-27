@@ -8,7 +8,7 @@ reg [3:0] IN_INSTR;
 reg [W-1:0] IN_A;
 reg [W-1:0] IN_B;
 reg Cin, Bin;
-wire EN_C, EN_B, Cout, Bout;
+wire Cout, Bout;
 wire [W-1:0] OUT;
 
 alu #(
@@ -18,8 +18,6 @@ UUT (
     .IN_INSTR(IN_INSTR),
     .IN_A(IN_A),
     .IN_B(IN_B),
-    .EN_C(EN_C),
-    .EN_B(EN_B),
     .Cin(Cin),
     .Cout(Cout),
     .Bin(Bin),

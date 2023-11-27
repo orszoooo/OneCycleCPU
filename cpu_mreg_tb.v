@@ -3,21 +3,15 @@
 module cpu_mreg_tb;
 
 reg CLK, RST;
-reg EN_C, EN_B; 
-reg Cin;
-reg Zin;
-reg Bin;
+reg Cin, Zin, Bin;
 
 wire C; //Carry
 wire Z; //Zero
 wire B; //Borrow
 
-
 cpu_mreg UUT(
     .CLK(CLK),
     .RST(RST),
-    .EN_C(EN_C),
-    .EN_B(EN_B),
     .Cin(Cin),
     .Zin(Zin),
     .Bin(Bin),
@@ -26,41 +20,42 @@ cpu_mreg UUT(
     .B(B)
 );
 
-
 initial begin
     $display("Simulation of %m started.");
-    RST = 1'b0;
-    EN_C = 1'b0;
-    EN_B = 1'b0;
+    RST = 1'b1;
     Cin = 1'b0;
     Zin = 1'b0;
     Bin = 1'b0;
-    WAIT(1);
-    EN_C = 1'b1;
-    EN_B = 1'b1;
-    WAIT(1);
-    EN_C = 1'b0;
-    EN_B = 1'b0;
+    WAIT(2);
+    RST = 1'b0;
+    WAIT(3);
+    
+    //SET and RESET C
+    Cin = 1'b1;
+    WAIT(2);
+    Cin = 1'b0;
     WAIT(5);
 
+    //SET and RESET B
+    Bin = 1'b1;
+    WAIT(2);
+    Bin = 1'b0;
+    WAIT(5);
+
+    //Z 
     Zin = 1'b1;
     WAIT(2);
     Zin = 1'b0;
-    WAIT(5);
 
+    //RST
     Cin = 1'b1;
-    WAIT(1);
-    EN_C = 1'b1;
-    WAIT(5);
-
     Bin = 1'b1;
-    WAIT(1);
-    EN_B = 1'b1;
     WAIT(5);
-
     RST = 1'b1;
-    
-    WAIT(200);
+    WAIT(5);
+    RST = 1'b0;
+
+    WAIT(10);
     $finish;
 end
 

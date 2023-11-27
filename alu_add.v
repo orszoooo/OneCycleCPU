@@ -3,6 +3,7 @@
 module alu_add #(
     parameter WIDTH = 8
 ) (
+    EN,
     IN_A,
     IN_B,
     IN_C,
@@ -10,12 +11,15 @@ module alu_add #(
     C_OUT
 );
 
+input EN;
 input [WIDTH-1:0] IN_A;
 input [WIDTH-1:0] IN_B;
 input IN_C;
-output [WIDTH-1:0] OUT;
-output C_OUT;
+output reg [WIDTH-1:0] OUT;
+output reg C_OUT;
 
-assign {C_OUT, OUT} = IN_A + IN_B + IN_C;
+always @(*) begin
+    if(EN) {C_OUT, OUT} = IN_A + IN_B + IN_C;
+end
 
 endmodule

@@ -6,8 +6,6 @@ module alu #(
     IN_INSTR,
     IN_A,
     IN_B,
-    EN_C,
-    EN_B,
     Cin,
     Cout,
     Bin,
@@ -19,13 +17,8 @@ parameter IWIDTH = 4;
 input [IWIDTH-1:0] IN_INSTR;
 input [DWIDTH-1:0] IN_A;
 input [DWIDTH-1:0] IN_B;
-input Cin;
-input Bin;
-
-output reg EN_C;
-output reg EN_B;
-output Cout;
-output Bout;
+input Cin,Bin;
+output Cout, Bout;
 output reg [DWIDTH-1:0] OUT;
 
 reg [DWIDTH-1:0] IN_ADD_SUB;
@@ -38,6 +31,7 @@ alu_add #(
     .WIDTH(DWIDTH)
 )
 adder (
+    .EN(EN_ADD_nSUB),
     .IN_A(IN_A),
     .IN_B(IN_ADD_SUB),
     .IN_C(Cin), 
@@ -49,6 +43,7 @@ alu_sub #(
     .WIDTH(DWIDTH)
 )
 subtactor (
+    .EN(!EN_ADD_nSUB),
     .IN_A(IN_A),
     .IN_B(IN_ADD_SUB),
     .IN_Bin(Bin), 
@@ -59,8 +54,6 @@ subtactor (
 assign OUT_ADD_SUB = (EN_ADD_nSUB ? OUT_ADD : OUT_SUB);
 
 always @(*) begin
-    EN_C = 1'b0;
-    EN_B = 1'b0;
     EN_ADD_nSUB = 1'b1; //uses ADDER
     IN_ADD_SUB = IN_B;
 
@@ -81,13 +74,11 @@ always @(*) begin
         end
         
         4'h4: begin //SUB 
-            EN_B = 1'b1;
             EN_ADD_nSUB = 1'b0;
             OUT = OUT_ADD_SUB;
         end
         
         4'h5: begin //ADD
-            EN_C = 1'b1;
             OUT = OUT_ADD_SUB;
         end
         
@@ -100,15 +91,15 @@ always @(*) begin
         end
         
         4'h8: begin // DEC
-            EN_B = 1'b1;
             EN_ADD_nSUB = 1'b0;
-            IN_ADD_SUB = {{DWIDTH{1'b0}},1'b1}; 
+            if(!Bin) IN_ADD_SUB = {{DWIDTH-1{1'b0}},1'b1}; 
+            else IN_ADD_SUB = {DWIDTH{1'b0}}; 
             OUT = OUT_ADD_SUB;
         end
 
         4'h9: begin //INC
-            EN_C = 1'b1;
-            IN_ADD_SUB = {{DWIDTH{1'b0}},1'b1}; 
+            if(!Cin) IN_ADD_SUB = {{DWIDTH-1{1'b0}},1'b1}; 
+            else IN_ADD_SUB = {DWIDTH{1'b0}}; 
             OUT = OUT_ADD_SUB;
         end
         default: begin //LD, ST, NOP, RST

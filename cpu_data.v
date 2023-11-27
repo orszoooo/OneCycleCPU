@@ -55,7 +55,7 @@ wire [WIDTH-1:0] DATA_BUS;
 wire [WIDTH-1:0] REG_F_OUT;
 wire [WIDTH-1:0] DATA_MEM_OUT;
 wire [WIDTH-1:0] ACC_IN;
-wire Z_ACC_MREG, EN_C, EN_B, C_ALU_MREG, C_MREG_ALU, B_ALU_MREG, B_MREG_ALU;
+wire Z_ACC_MREG, C_ALU_MREG, C_MREG_ALU, B_ALU_MREG, B_MREG_ALU;
 output Z;
 
 reg_f #(.WIDTH(WIDTH), .SIZE(REG_SIZE))
@@ -88,8 +88,6 @@ alu_module (
     .IN_INSTR(ALU_OUT),
     .IN_A(DATA_BUS),
     .IN_B(IN_B),
-    .EN_C(EN_C),
-    .EN_B(EN_B),
     .Cin(C_MREG_ALU),
     .Cout(C_ALU_MREG),
     .Bin(B_MREG_ALU),
@@ -115,8 +113,6 @@ end
 cpu_mreg mreg_module(
     .CLK(CLK),
     .RST(MREG_RST),
-    .EN_C(EN_C),
-    .EN_B(EN_B),
     .Cin(C_ALU_MREG),
     .Zin(Z_ACC_MREG),
     .Bin(B_ALU_MREG),

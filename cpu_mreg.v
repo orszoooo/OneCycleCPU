@@ -3,8 +3,6 @@
 module cpu_mreg (
     CLK,
     RST,
-    EN_C,
-    EN_B,
     Cin,
     Zin,
     Bin,
@@ -14,29 +12,58 @@ module cpu_mreg (
 );
 
 input CLK, RST;
-input EN_C, EN_B; 
-input Cin;
-input Zin;
-input Bin;
+input Cin, Zin, Bin;
 
 output reg C; //Carry
 output reg Z; //Zero
 output reg B; //Borrow
 
-always @(posedge CLK, posedge RST, posedge Zin) begin
-    if(RST) begin
-        C <= 1'b0;
-        Z <= 1'b0;
-        B <= 1'b0;
-    end
-    else begin 
-        C <= C;
-        Z <= Zin;
-        B <= B;
+reg C_LAST = 1'b0;
+reg B_LAST = 1'b0;
 
-        if(EN_C) C <= Cin;
-        if(EN_B) B <= Bin;
+//Reset
+always @(RST) begin
+    C <= 1'b0;
+    Z <= 1'b0;
+    B <= 1'b0;
+end
+
+//Zero
+always @(Zin) begin
+    Z <= Zin;
+end
+
+//Set C
+always @(Cin) begin
+    if(Cin || C_LAST) begin
+        C = 1'b1; 
     end
+    else begin
+        C = 1'b0;
+    end
+end
+
+//Set B
+always @(Bin) begin
+    if(Bin || B_LAST) begin
+        B = 1'b1; 
+    end
+    else begin
+        B = 1'b0;
+    end
+end
+
+//Reset C/B
+always @(posedge CLK) begin
+    if(!Cin && C_LAST) begin
+        C <= 1'b0; 
+    end
+    C_LAST <= Cin;
+
+    if(!Bin && B_LAST) begin
+        B <= 1'b0; 
+    end
+    B_LAST <= Bin;
 end
 
 endmodule

@@ -16,7 +16,7 @@ input [WIDTH-1:0] IN;
 inout [WIDTH-1:0] PORT;
 input EN, CLK;
 input [$clog2(SIZE)-1:0] SEL;
-output reg [WIDTH-1:0] OUT;
+output [WIDTH-1:0] OUT;
 
 reg [WIDTH-1:0] REG_FILE [SIZE:0];
 reg PORT_EN = 1'b1;
@@ -34,8 +34,9 @@ always@(posedge CLK) begin
     else begin
         PORT_EN <= 1'b0;
         REG_FILE[SIZE-1] <= PORT; //To read PORT SEL == 4'b1000 - nineth reg
-        OUT <= REG_FILE[SEL];
     end
 end
+
+assign OUT = REG_FILE[SEL];
 
 endmodule 

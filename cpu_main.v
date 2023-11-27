@@ -32,6 +32,7 @@ wire D_MEM_ADDR_MODE; //0 - ADDR from operand, 1 - ADDR form R0-R7
 
 wire [IWIDTH-2:0] ALU_OUT;
 wire EN_ACC;
+wire Z;
 
 cpu_ctrl #(
     .WIDTH(WIDTH),
@@ -41,6 +42,7 @@ cpu_ctrl #(
 )
 cpu_ctrl_module (
     .CLK(CLK),
+    .Z(Z),
     .ALU_OUT(ALU_OUT),
     .IMM(IMM),
     .IN_B_SEL(IN_B_SEL),
@@ -71,8 +73,12 @@ cpu_data_module (
     .D_MEM_ADDR_MODE(D_MEM_ADDR_MODE), 
     .EN_D_MEM(EN_D_MEM),
 
+    .IN_B_SEL(IN_B_SEL),
+    .IMM(IMM),
+
     .ALU_OUT(ALU_OUT),
-    .EN_ACC(EN_ACC)
+    .EN_ACC(EN_ACC),
+    .Z(Z)
 );
 
 

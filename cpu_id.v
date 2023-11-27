@@ -8,6 +8,7 @@ module cpu_id #(
     parameter IN_B_SEL_SIZE = 2 // 00 - IMM, 01 - REG_F, 10 - DATA_MEM
 )(
     IN,
+    Z,
     PC_RST,
     PC_LD,
     ALU_OUT,
@@ -27,6 +28,7 @@ module cpu_id #(
 );
 
 input [WIDTH-1:0] IN;
+input Z;
 
 output reg PC_RST;
 output reg PC_LD;
@@ -55,7 +57,7 @@ output reg LR_LD;
 //TO DO: STACK, MAIN REGISTER
 
 always @(*) begin
-    ALU_OUT = IN[WIDTH-2:(WIDTH-IWIDTH)];
+    ALU_OUT = 4'hF;
     
     PC_RST = 1'b0;
     PC_LD = 1'b0;
@@ -81,20 +83,24 @@ always @(*) begin
         PC_RST = 1'b1;
     end
     else if(IN[WIDTH-1:(WIDTH-IWIDTH)] == `LD) begin
+        ALU_OUT = IN[WIDTH-2:(WIDTH-IWIDTH)];
         D_MEM_ADDR = IN[(WIDTH-IWIDTH)-1:0];
         IN_B_SEL = 2'b10; 
         EN_ACC = 1'b1;
     end
     else if(IN[WIDTH-1:(WIDTH-IWIDTH)] == `ST) begin
+        ALU_OUT = IN[WIDTH-2:(WIDTH-IWIDTH)];
         D_MEM_ADDR = IN[(WIDTH-IWIDTH)-1:0];
         EN_D_MEM = 1'b1;
     end
     else if(IN[WIDTH-1:(WIDTH-IWIDTH)] == `LDR) begin
+        ALU_OUT = IN[WIDTH-2:(WIDTH-IWIDTH)];
         REG_F_SEL = IN[REG_F_SEL_SIZE-1:0]; //LAST 4 bits of IN
         IN_B_SEL = 2'b01;
         EN_ACC = 1'b1;
     end
     else if(IN[WIDTH-1:(WIDTH-IWIDTH)] == `STR) begin
+        ALU_OUT = IN[WIDTH-2:(WIDTH-IWIDTH)];
         REG_F_SEL = IN[REG_F_SEL_SIZE-1:0];
         EN_REG_F = 1'b1;
     end
@@ -112,14 +118,30 @@ always @(*) begin
         JMP_MODE = 2'b01;
         PC_LD = 1'b1;
     end
+    else if(IN[WIDTH-1:(WIDTH-IWIDTH)] == `NOT ||
+            IN[WIDTH-1:(WIDTH-IWIDTH)] == `XOR ||
+            IN[WIDTH-1:(WIDTH-IWIDTH)] == `OR ||
+            IN[WIDTH-1:(WIDTH-IWIDTH)] == `AND ||
+            IN[WIDTH-1:(WIDTH-IWIDTH)] == `SUB ||
+            IN[WIDTH-1:(WIDTH-IWIDTH)] == `ADD ||
+            IN[WIDTH-1:(WIDTH-IWIDTH)] == `RR ||
+            IN[WIDTH-1:(WIDTH-IWIDTH)] == `RL ||
+            IN[WIDTH-1:(WIDTH-IWIDTH)] == `DEC ||
+            IN[WIDTH-1:(WIDTH-IWIDTH)] == `INC 
+    ) begin
+        ALU_OUT = IN[WIDTH-2:(WIDTH-IWIDTH)];
+        EN_ACC = 1'b1;
+    end 
     else if((IN[WIDTH-1:(WIDTH-IWIDTH)] == `XORR) ||
             (IN[WIDTH-1:(WIDTH-IWIDTH)] == `ORR)  ||
             (IN[WIDTH-1:(WIDTH-IWIDTH)] == `ANDR) ||
             (IN[WIDTH-1:(WIDTH-IWIDTH)] == `ADDR) ||
             (IN[WIDTH-1:(WIDTH-IWIDTH)] == `SUBR)
     ) begin
+        ALU_OUT = IN[WIDTH-2:(WIDTH-IWIDTH)];
         REG_F_SEL = IN[REG_F_SEL_SIZE-1:0]; 
         IN_B_SEL = 2'b01;
+        EN_ACC = 1'b1;
     end
     else if(IN[WIDTH-1:(WIDTH-IWIDTH)] == `CALL) begin
         LR_LD = 1'b1;
@@ -132,12 +154,28 @@ always @(*) begin
         BASE_REG_OFFSET = {{(WIDTH-1){1'b0}},{1'b1}};
         PC_LD = 1'b1;
     end
+    else if(IN[WIDTH-1:(WIDTH-IWIDTH)] == `JZ) begin
+        if(Z) begin 
+            BASE_REG_OFFSET = IN[(WIDTH-IWIDTH)-1:0];
+            JMP_MODE = 2'b00;
+            PC_LD = 1'b1;
+        end
+    end
+    else if(IN[WIDTH-1:(WIDTH-IWIDTH)] == `JZO) begin
+        if(Z) begin 
+            BASE_REG_OFFSET = IN[(WIDTH-IWIDTH)-1:0];
+            JMP_MODE = 2'b01;
+            PC_LD = 1'b1;
+        end
+    end
     else if(IN[WIDTH-1:(WIDTH-IWIDTH)] == `LDI) begin
+        ALU_OUT = IN[WIDTH-2:(WIDTH-IWIDTH)];
         IMM = IN[(WIDTH-IWIDTH)-1:0];
         IN_B_SEL = 2'b00; 
         EN_ACC = 1'b1;
     end
     else if(IN[WIDTH-1:(WIDTH-IWIDTH)] == `LDAR) begin
+        ALU_OUT = IN[WIDTH-2:(WIDTH-IWIDTH)];
         REG_F_SEL = IN[REG_F_SEL_SIZE-1:0];
         D_MEM_ADDR_MODE = 1'b1;
         IN_B_SEL = 2'b10; 

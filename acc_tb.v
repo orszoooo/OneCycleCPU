@@ -1,18 +1,20 @@
 `timescale 1ns/100ps
 
 module acc_tb;
-parameter W = 4;
+parameter W = 8;
 reg CLK, EN;
 reg [W-1:0] IN;
 wire [W-1:0] OUT;
+wire Z;
 
 acc #(
     .WIDTH(W)) 
 UUT (
     .CLK(CLK),
-    .CE(EN),
+    .EN(EN),
     .IN(IN),
-    .OUT(OUT)
+    .OUT(OUT),
+    .Z(Z)
 );
 
 initial begin

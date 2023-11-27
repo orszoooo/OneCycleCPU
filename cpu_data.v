@@ -20,8 +20,12 @@ module cpu_data #(
     D_MEM_ADDR_MODE, 
     EN_D_MEM,
 
+    IN_B_SEL,
+    IMM,
+
     ALU_OUT,
-    EN_ACC
+    EN_ACC,
+    Z
 );
 
 input CLK;
@@ -51,6 +55,8 @@ wire [WIDTH-1:0] DATA_BUS;
 wire [WIDTH-1:0] REG_F_OUT;
 wire [WIDTH-1:0] DATA_MEM_OUT;
 wire [WIDTH-1:0] ACC_IN;
+wire Z_ACC_MREG, EN_C, EN_B, C_ALU_MREG, C_MREG_ALU, B_ALU_MREG, B_MREG_ALU;
+output Z;
 
 reg_f #(.WIDTH(WIDTH), .SIZE(REG_SIZE))
 reg_f_module (
@@ -82,6 +88,12 @@ alu_module (
     .IN_INSTR(ALU_OUT),
     .IN_A(DATA_BUS),
     .IN_B(IN_B),
+    .EN_C(EN_C),
+    .EN_B(EN_B),
+    .Cin(C_MREG_ALU),
+    .Cout(C_ALU_MREG),
+    .Bin(B_MREG_ALU),
+    .Bout(B_ALU_MREG),
     .OUT(ACC_IN)
 );
 
@@ -90,7 +102,27 @@ acc_module (
     .CLK(CLK),
     .EN(EN_ACC),
     .IN(ACC_IN),
-    .OUT(DATA_BUS)
+    .OUT(DATA_BUS),
+    .Z(Z_ACC_MREG)
+);
+
+reg MREG_RST = 1'b1;
+
+always @(posedge CLK) begin
+    if(MREG_RST) MREG_RST = 1'b0;
+end
+
+cpu_mreg mreg_module(
+    .CLK(CLK),
+    .RST(MREG_RST),
+    .EN_C(EN_C),
+    .EN_B(EN_B),
+    .Cin(C_ALU_MREG),
+    .Zin(Z_ACC_MREG),
+    .Bin(B_ALU_MREG),
+    .C(C_MREG_ALU),
+    .Z(Z),
+    .B(B_MREG_ALU)
 );
 
 endmodule

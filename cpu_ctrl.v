@@ -8,6 +8,7 @@ module cpu_ctrl #(
 )
 (
     CLK,
+    Z,
     ALU_OUT,
     IMM,
     IN_B_SEL,
@@ -19,7 +20,7 @@ module cpu_ctrl #(
     EN_ACC
 );
 
-input CLK;
+input CLK, Z;
 wire PC_RST, PC_LD; 
 wire [(WIDTH-IWIDTH)-1:0] ROM_ADDR;
 wire [WIDTH-1:0] ROM_DATA;
@@ -60,6 +61,7 @@ rom (
 cpu_id #(.WIDTH(WIDTH),.IWIDTH(IWIDTH),.REG_F_SEL_SIZE(REG_F_SEL_SIZE), .IN_B_SEL_SIZE(IN_B_SEL_SIZE))
 id_module (
     .IN(ROM_DATA),
+    .Z(Z),
     .PC_RST(PC_RST),
     .PC_LD(PC_LD),
     .ALU_OUT(ALU_OUT),

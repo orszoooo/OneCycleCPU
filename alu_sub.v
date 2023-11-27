@@ -1,9 +1,8 @@
 `timescale 1ns/100ps
 
 module alu_sub #(
-    parameter WIDTH = 4
+    parameter WIDTH = 8
 ) (
-    EN,
     IN_A,
     IN_B,
     IN_Bin,
@@ -13,11 +12,10 @@ module alu_sub #(
 
 input [WIDTH-1:0] IN_A;
 input [WIDTH-1:0] IN_B;
-input EN, IN_Bin;
+input IN_Bin;
 output [WIDTH-1:0] OUT;
 output B_OUT;
 
-assign OUT = (EN ? (IN_A ^ IN_B ^ IN_Bin) : {WIDTH{1'bz}});
-assign B_OUT = (EN ? ((~IN_A & IN_B) | (~(IN_A ^ IN_B) & IN_Bin)) : 1'bz);
+assign {B_OUT,OUT} = IN_A - IN_B - IN_Bin;
 
 endmodule

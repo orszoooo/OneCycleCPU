@@ -8,6 +8,7 @@ parameter REG_F_SEL_SIZE = 4;
 parameter IN_B_SEL_SIZE = 2;
 
 reg CLK;
+reg Z;
 wire [IWIDTH-2:0] ALU_OUT; //4 bit
 wire [(WIDTH-IWIDTH)-1:0] IMM; //Immediate data
 wire [IN_B_SEL_SIZE-1:0] IN_B_SEL;
@@ -21,6 +22,7 @@ wire EN_ACC;
 cpu_ctrl #(.WIDTH(WIDTH),.IWIDTH(IWIDTH),.REG_F_SEL_SIZE(REG_F_SEL_SIZE),.IN_B_SEL_SIZE(IN_B_SEL_SIZE))
 UUT(
     .CLK(CLK),
+    .Z(Z),
     .ALU_OUT(ALU_OUT),
     .IMM(IMM),
     .IN_B_SEL(IN_B_SEL),

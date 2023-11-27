@@ -25,6 +25,8 @@
 
 `define CALL 5'h16
 `define RET 5'h17
+`define JZ 5'h18 //jump condtionally
+`define JZO 5'h19 //jump condtionally for offset
 
 `define LDI 5'h1A //Load immediate, differentiates from LD only in fifth bit
 `define LDAR 5'h1D //DATA_MEM address read from R0-R7

@@ -25,7 +25,6 @@ wire [WIDTH-1:0] ADDER_OUT;
 
 alu_add #(.WIDTH(WIDTH))
 ADDER (
-    .EN(1'b1),
     .IN_A(ADDER_IN),
     .IN_B(BASE_REG_OFFSET),
     .IN_C(1'b0),

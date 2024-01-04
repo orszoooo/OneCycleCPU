@@ -1,2 +1,15 @@
-cpu_sim
-cpu_sim.vcd
+*.bak
+*.kpt
+*.tdf
+*.hdb
+*.cdb
+*.vcd
+*_sim
+c5_pin_model_dump.txt
+
+db/
+greybox_tmp/
+incremental_db/
+output_files/
+simulation/
+Output/

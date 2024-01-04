@@ -10,9 +10,9 @@ rm -f cpu_sim.vcd
 #iverilog -Wall -s reg_f_tb -o cpu_sim reg_f_tb.v reg_f.v 
 #iverilog -Wall -s data_mem_tb -o cpu_sim data_mem_tb.v data_mem.v 
 #iverilog -Wall -s cpu_data_tb -o cpu_sim cpu_data_tb.v cpu_data.v data_mem.v reg_f.v alu.v acc.v alu_add.v alu_sub.v cpu_mreg.v
-iverilog -Wall -s cpu_main_tb -o cpu_sim cpu_main_tb.v rom.v cpu_pc.v cpu_id.v cpu_main.v acc.v alu.v alu_add.v alu_sub.v reg_f.v data_mem.v cpu_data.v cpu_ctrl.v cpu_jmp.v cpu_lr.v cpu_mreg.v
+#iverilog -Wall -s cpu_main_tb -o cpu_sim cpu_main_tb.v rom.v cpu_pc.v cpu_id.v cpu_main.v acc.v alu.v alu_add.v alu_sub.v reg_f.v data_mem.v cpu_data.v cpu_ctrl.v cpu_jmp.v cpu_lr.v cpu_mreg.v
 #iverilog -Wall -s alu_tb -o cpu_sim alu_tb.v alu.v alu_add.v alu_sub.v 
-#iverilog -Wall -s cpu_mreg_tb -o cpu_sim cpu_mreg_tb.v cpu_mreg.v
+iverilog -Wall -s cpu_mreg_tb -o cpu_sim cpu_mreg_tb.v cpu_mreg.v
 #iverilog -Wall -s acc_tb -o cpu_sim acc_tb.v acc.v
 
 vvp cpu_sim

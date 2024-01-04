@@ -2,18 +2,15 @@
 
 module rom_tb;
 reg CLK;
-parameter AW = 4;
-parameter DW = 8;
-reg [AW-1:0] ADDR;
-wire [DW-1:0] DATA;
+parameter WIDTH = 8;
+reg [WIDTH-1:0] ADDR;
+wire [(WIDTH*2)-1:0] DATA;
 
-ROM #(
-    .AWIDTH(AW),
-    .DWIDTH(DW)
-    ) 
+rom #(
+    .WIDTH(WIDTH))
 UUT (
-    .ADDR(ADDR),
-    .DATA(DATA)
+    .addr(ADDR),
+    .data(DATA)
 );
 
 initial begin
@@ -45,7 +42,7 @@ end
 
 // Writing VCD waveform
 initial begin
-	$dumpfile("cpu_sim.vcd");
+	$dumpfile("./Output/rom_sim.vcd");
 	$dumpvars(0, UUT);
 	$dumpon;
 end

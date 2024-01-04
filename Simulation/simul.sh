@@ -5,11 +5,9 @@ if [ "$#" -eq 0 ]; then
     exit 1
 fi
 
-cd Output
+rm -f ./Output/$1_sim.vcd
 
-rm -f $1_sim.vcd
-
-modules_dir="../../Modules"
+modules_dir="../Modules"
 modules_list=""
 
 for i in "$@"
@@ -17,18 +15,18 @@ do
   modules_list+="$modules_dir/$i.v "
 done
 
-iverilog -Wall -s $1_tb -o $1_sim "$modules_dir"/tb/$1_tb.v "$modules_list" 
+iverilog -Wall -s $1_tb -o ./Output/$1_sim "$modules_dir"/tb/$1_tb.v "$modules_list" 
 
 if [ $? -eq 1 ]; then
     echo Source compilation failure
     exit 1
 fi
 
-vvp $1_sim
+vvp ./Output/$1_sim
 
 if [ $? -ne 0 ]; then
     echo Running simulation failure
     exit 1
 fi
 
-rm -f $1_sim
+rm -f ./Output/$1_sim

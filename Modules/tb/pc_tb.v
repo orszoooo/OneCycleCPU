@@ -1,18 +1,18 @@
 `timescale 1ns/100ps
 
-module cpu_pc_tb;
+module pc_tb;
 parameter WIDTH = 8;
 reg CLK, RST, LD;
 reg [WIDTH-1:0] ADDR;
 wire [WIDTH-1:0] PC_OUT;
 
-cpu_pc #(.WIDTH(WIDTH)) 
+pc #(.WIDTH(WIDTH)) 
 UUT (
-    .CLK(CLK),
-    .RST(RST),
-    .LD(LD),
-    .ADDR(ADDR),
-    .PC_OUT(PC_OUT)
+    .clk(CLK),
+    .rst(RST),
+    .ld(LD),
+    .addr(ADDR),
+    .pc_out(PC_OUT)
 );
 
 initial begin
@@ -48,7 +48,7 @@ end
 
 // Writing VCD waveform
 initial begin
-	$dumpfile("cpu_sim.vcd");
+	$dumpfile("pc_sim.vcd");
 	$dumpvars(0, UUT);
 	$dumpon;
 end

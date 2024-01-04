@@ -3,7 +3,7 @@
 module alu #(
     parameter DWIDTH = 8
 )(
-    IN_INSTR,
+    in_instr,
     IN_A,
     IN_B,
     Cin,
@@ -14,7 +14,7 @@ module alu #(
 );
 
 parameter IWIDTH = 4;
-input [IWIDTH-1:0] IN_INSTR;
+input [IWIDTH-1:0] in_instr;
 input [DWIDTH-1:0] IN_A;
 input [DWIDTH-1:0] IN_B;
 input Cin,Bin;
@@ -57,7 +57,7 @@ always @(*) begin
     EN_ADD_nSUB = 1'b1; //uses ADDER
     IN_ADD_SUB = IN_B;
 
-    case(IN_INSTR)
+    case(in_instr)
         4'h0: begin  //NOT
             OUT = ~IN_A;
         end

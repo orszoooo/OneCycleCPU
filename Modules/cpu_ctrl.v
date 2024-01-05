@@ -8,7 +8,7 @@ module cpu_ctrl #(
 )
 (
     clk,
-    flag_z,
+    z_flag,
     alu_out,
     imm,
     in_b_sel,
@@ -20,7 +20,7 @@ module cpu_ctrl #(
     en_acc
 );
 
-input clk, flag_z;
+input clk, z_flag;
 wire pc_rst, pc_ld; 
 wire [WIDTH-1:0] rom_addr;
 wire [WIDTH-1:0] rom_instr;
@@ -64,7 +64,7 @@ id #(.WIDTH(WIDTH), .ALU_INSTR_WIDTH(ALU_INSTR_WIDTH), .REG_F_SEL_SIZE(REG_F_SEL
 id_module (
     .instr(rom_instr),
     .arg(rom_arg),
-    .flag_z(flag_z),
+    .z_flag(z_flag),
     .pc_rst(pc_rst),
     .pc_ld(pc_ld),
     .alu_out(alu_out),

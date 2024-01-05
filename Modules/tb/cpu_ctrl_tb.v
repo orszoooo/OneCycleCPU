@@ -2,13 +2,13 @@
 
 module cpu_ctrl_tb;
 
-parameter WIDTH = 8,
-parameter ALU_INSTR_WIDTH = 4,
-parameter REG_F_SEL_SIZE = 4,
-parameter IN_B_SEL_SIZE = 2
+parameter WIDTH = 8;
+parameter ALU_INSTR_WIDTH = 4;
+parameter REG_F_SEL_SIZE = 4;
+parameter IN_B_SEL_SIZE = 2;
 
 reg CLK;
-reg FLAG_Z;
+reg Z_FLAG;
 wire [ALU_INSTR_WIDTH-1:0] ALU_OUT; 
 wire [WIDTH-1:0] IMM; //Immediate data
 wire [IN_B_SEL_SIZE-1:0] IN_B_SEL;
@@ -22,7 +22,7 @@ wire EN_ACC;
 cpu_ctrl #(.WIDTH(WIDTH),.ALU_INSTR_WIDTH(ALU_INSTR_WIDTH),.REG_F_SEL_SIZE(REG_F_SEL_SIZE),.IN_B_SEL_SIZE(IN_B_SEL_SIZE))
 UUT(
     .clk(CLK),
-    .flag_Z(FLAG_Z),
+    .z_flag(Z_FLAG),
     .alu_out(ALU_OUT),
     .imm(IMM),
     .in_b_sel(IN_B_SEL),
@@ -37,6 +37,7 @@ UUT(
 
 initial begin
     $display("Simulation of %m started.");
+    Z_FLAG = 1'b0;
     WAIT(200);
     $finish;
 end

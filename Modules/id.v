@@ -23,9 +23,9 @@ module id #(
     en_d_mem,
     en_acc,
     jmp_mode,   
-    base_reg_offset,
-    base_reg_ld,
     base_reg_data,
+    base_reg_ld,
+    base_reg_offset,
     lr_ld
 );
 

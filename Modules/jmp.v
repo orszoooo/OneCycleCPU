@@ -4,9 +4,9 @@ module jmp #(
     parameter WIDTH = 8
 )(
     jmp_mode, // 00 - absolute, 01 - relative to base address register, 11 - CALL
-    base_reg_offset,
-    base_reg_ld,
     base_reg_data,
+    base_reg_ld,
+    base_reg_offset,
     lr_addr,
     out_addr
 );

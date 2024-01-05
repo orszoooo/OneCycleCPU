@@ -2,36 +2,36 @@
 
 module cpu_ctrl_tb;
 
-parameter WIDTH = 13;
-parameter IWIDTH = 5; //Instruction width
-parameter REG_F_SEL_SIZE = 4;
-parameter IN_B_SEL_SIZE = 2;
+parameter WIDTH = 8,
+parameter ALU_INSTR_WIDTH = 4,
+parameter REG_F_SEL_SIZE = 4,
+parameter IN_B_SEL_SIZE = 2
 
 reg CLK;
-reg Z;
-wire [IWIDTH-2:0] ALU_OUT; //4 bit
-wire [(WIDTH-IWIDTH)-1:0] IMM; //Immediate data
+reg FLAG_Z;
+wire [ALU_INSTR_WIDTH-1:0] ALU_OUT; 
+wire [WIDTH-1:0] IMM; //Immediate data
 wire [IN_B_SEL_SIZE-1:0] IN_B_SEL;
 wire [REG_F_SEL_SIZE-1:0] REG_F_SEL;
 wire EN_REG_F;
-wire [(WIDTH-IWIDTH)-1:0] D_MEM_ADDR;
+wire [WIDTH-1:0] D_MEM_ADDR;
 wire D_MEM_ADDR_MODE;
 wire EN_D_MEM;
 wire EN_ACC;    
 
-cpu_ctrl #(.WIDTH(WIDTH),.IWIDTH(IWIDTH),.REG_F_SEL_SIZE(REG_F_SEL_SIZE),.IN_B_SEL_SIZE(IN_B_SEL_SIZE))
+cpu_ctrl #(.WIDTH(WIDTH),.ALU_INSTR_WIDTH(ALU_INSTR_WIDTH),.REG_F_SEL_SIZE(REG_F_SEL_SIZE),.IN_B_SEL_SIZE(IN_B_SEL_SIZE))
 UUT(
-    .CLK(CLK),
-    .Z(Z),
-    .ALU_OUT(ALU_OUT),
-    .IMM(IMM),
-    .IN_B_SEL(IN_B_SEL),
-    .REG_F_SEL(REG_F_SEL),
-    .EN_REG_F(EN_REG_F),
-    .D_MEM_ADDR(D_MEM_ADDR),
-    .D_MEM_ADDR_MODE(D_MEM_ADDR_MODE),  
-    .EN_D_MEM(EN_D_MEM),
-    .EN_ACC(EN_ACC)
+    .clk(CLK),
+    .flag_Z(FLAG_Z),
+    .alu_out(ALU_OUT),
+    .imm(IMM),
+    .in_b_sel(IN_B_SEL),
+    .reg_f_sel(REG_F_SEL),
+    .en_reg_f(EN_REG_F),
+    .d_mem_addr(D_MEM_ADDR),
+    .d_mem_addr_mode(D_MEM_ADDR_MODE),  
+    .en_d_mem(EN_D_MEM),
+    .en_acc(EN_ACC)
 );
 
 
@@ -49,7 +49,7 @@ end
 
 // Writing VCD waveform
 initial begin
-	$dumpfile("cpu_sim.vcd");
+	$dumpfile("./Output/cpu_ctrl_sim.vcd");
 	$dumpvars(0, UUT);
 	$dumpon;
 end

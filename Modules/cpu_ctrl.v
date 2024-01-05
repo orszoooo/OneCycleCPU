@@ -1,101 +1,104 @@
 `timescale 1ns/100ps
 
 module cpu_ctrl #(
-    parameter WIDTH = 13,
-    parameter IWIDTH = 5, //Instruction width
+    parameter WIDTH = 8,
+    parameter ALU_INSTR_WIDTH = 4,
     parameter REG_F_SEL_SIZE = 4,
     parameter IN_B_SEL_SIZE = 2
 )
 (
-    CLK,
-    Z,
-    ALU_OUT,
-    IMM,
-    IN_B_SEL,
-    REG_F_SEL,
-    EN_REG_F,
-    D_MEM_ADDR,
-    D_MEM_ADDR_MODE,  
-    EN_D_MEM,
-    EN_ACC
+    clk,
+    flag_z,
+    alu_out,
+    imm,
+    in_b_sel,
+    reg_f_sel,
+    en_reg_f,
+    d_mem_addr,
+    d_mem_addr_mode,  
+    en_d_mem,
+    en_acc
 );
 
-input CLK, Z;
-wire PC_RST, PC_LD; 
-wire [(WIDTH-IWIDTH)-1:0] ROM_ADDR;
-wire [WIDTH-1:0] ROM_DATA;
-wire [1:0] JMP_MODE;   
-wire [(WIDTH-IWIDTH)-1:0] BASE_REG_OFFSET;
-wire BASE_REG_LD;
-wire [(WIDTH-IWIDTH)-1:0] BASE_REG_DATA;
-wire [(WIDTH-IWIDTH)-1:0] JMP_ADDRESS_PC;
-wire LR_LD;
-wire [(WIDTH-IWIDTH)-1:0] LR_JMP_ADDRESS;
+input clk, flag_z;
+wire pc_rst, pc_ld; 
+wire [WIDTH-1:0] rom_addr;
+wire [WIDTH-1:0] rom_instr;
+wire [WIDTH-1:0] rom_arg;
+wire [1:0] jmp_mode;   
+wire [WIDTH-1:0] base_reg_offset;
+wire base_reg_ld;
+wire [WIDTH-1:0] base_reg_data;
+wire [WIDTH-1:0] jmp_addr_pc;
+wire lr_ld;
+wire [WIDTH-1:0] lr_jmp_addr;
 
-output [IWIDTH-2:0] ALU_OUT; //4 bit
-output [(WIDTH-IWIDTH)-1:0] IMM; //Immediate data
-output [IN_B_SEL_SIZE-1:0] IN_B_SEL;
-output [REG_F_SEL_SIZE-1:0] REG_F_SEL;
-output EN_REG_F;
-output [(WIDTH-IWIDTH)-1:0] D_MEM_ADDR;
-output D_MEM_ADDR_MODE;
-output EN_D_MEM;
-output EN_ACC;    
+output [ALU_INSTR_WIDTH-1:0] alu_out; 
+output [WIDTH-1:0] imm; //Immediate data
+output [IN_B_SEL_SIZE-1:0] in_b_sel;
+output [REG_F_SEL_SIZE-1:0] reg_f_sel;
+output en_reg_f;
+output [WIDTH-1:0] d_mem_addr;
+output d_mem_addr_mode;
+output en_d_mem;
+output en_acc;    
 
 
-cpu_pc #(.WIDTH((WIDTH-IWIDTH))) 
+pc #(.WIDTH(WIDTH)) 
 pc_module (
-    .CLK(CLK),
-    .RST(PC_RST),
-    .LD(PC_LD),
-    .ADDR(JMP_ADDRESS_PC),
-    .PC_OUT(ROM_ADDR)
+    .clk(clk),
+    .rst(pc_rst),
+    .ld(pc_ld),
+    .addr(jmp_addr_pc),
+    .pc_out(rom_addr)
 );
 
-ROM #(.AWIDTH(WIDTH-IWIDTH),.DWIDTH(WIDTH))
-rom (
-    .ADDR(ROM_ADDR),
-    .DATA(ROM_DATA)
+rom #(.WIDTH(WIDTH))
+rom_module (
+    .addr(rom_addr),
+    .instr(rom_instr),
+    .arg(rom_arg)
 );
 
-cpu_id #(.WIDTH(WIDTH),.IWIDTH(IWIDTH),.REG_F_SEL_SIZE(REG_F_SEL_SIZE), .IN_B_SEL_SIZE(IN_B_SEL_SIZE))
+id #(.WIDTH(WIDTH), .ALU_INSTR_WIDTH(ALU_INSTR_WIDTH), .REG_F_SEL_SIZE(REG_F_SEL_SIZE), .IN_B_SEL_SIZE(IN_B_SEL_SIZE))
 id_module (
-    .IN(ROM_DATA),
-    .Z(Z),
-    .PC_RST(PC_RST),
-    .PC_LD(PC_LD),
-    .ALU_OUT(ALU_OUT),
-    .IMM(IMM),
-    .IN_B_SEL(IN_B_SEL),
-    .REG_F_SEL(REG_F_SEL),
-    .EN_REG_F(EN_REG_F),
-    .D_MEM_ADDR(D_MEM_ADDR),
-    .D_MEM_ADDR_MODE(D_MEM_ADDR_MODE),
-    .EN_D_MEM(EN_D_MEM),
-    .EN_ACC(EN_ACC),
-    .JMP_MODE(JMP_MODE),   
-    .BASE_REG_OFFSET(BASE_REG_OFFSET),
-    .BASE_REG_LD(BASE_REG_LD),
-    .BASE_REG_DATA(BASE_REG_DATA),
-    .LR_LD(LR_LD)
+    .instr(rom_instr),
+    .arg(rom_arg),
+    .flag_z(flag_z),
+    .pc_rst(pc_rst),
+    .pc_ld(pc_ld),
+    .alu_out(alu_out),
+    .imm(imm),
+    .in_b_sel(in_b_sel),
+    .reg_f_sel(reg_f_sel),
+    .en_reg_f(en_reg_f),
+    .d_mem_addr(d_mem_addr),
+    .d_mem_addr_mode(d_mem_addr_mode),
+    .en_d_mem(en_d_mem),
+    .en_acc(en_acc),
+    .jmp_mode(jmp_mode),   
+    .base_reg_data(base_reg_data),
+    .base_reg_ld(base_reg_ld),
+    .base_reg_offset(base_reg_offset),
+    .lr_ld(lr_ld)
 );
 
-cpu_jmp #(.WIDTH((WIDTH-IWIDTH)))
+jmp #(.WIDTH(WIDTH))
 jmp_module (
-    .JMP_MODE(JMP_MODE),
-    .BASE_REG_OFFSET(BASE_REG_OFFSET),
-    .BASE_REG_LD(BASE_REG_LD),
-    .BASE_REG_DATA(BASE_REG_DATA),
-    .LR_ADDRESS(LR_JMP_ADDRESS),
-    .ADDRESS_OUT(JMP_ADDRESS_PC)
+    .jmp_mode(jmp_mode),
+    .base_reg_data(base_reg_data),
+    .base_reg_ld(base_reg_ld),
+    .base_reg_offset(base_reg_offset),
+    .lr_addr(lr_jmp_addr),
+    .out_addr(jmp_addr_pc)
 );
 
-cpu_lr #(.WIDTH((WIDTH-IWIDTH)))
+lr #(.WIDTH(WIDTH))
 lr_module (
-    .CLK(CLK),
-    .LR_LD(LR_LD),
-    .LR_DATA(ROM_ADDR),
-    .LR_OUT(LR_JMP_ADDRESS)   
+    .clk(clk),
+    .ld(lr_ld),
+    .data(base_reg_offset),
+    .out(lr_jmp_addr)   
 );
 
 endmodule

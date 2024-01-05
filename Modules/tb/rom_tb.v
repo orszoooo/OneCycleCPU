@@ -4,13 +4,15 @@ module rom_tb;
 reg CLK;
 parameter WIDTH = 8;
 reg [WIDTH-1:0] ADDR;
-wire [(WIDTH*2)-1:0] DATA;
+wire [WIDTH-1:0] INSTR;
+wire [WIDTH-1:0] ARG;
 
 rom #(
     .WIDTH(WIDTH))
 UUT (
     .addr(ADDR),
-    .data(DATA)
+    .instr(INSTR),
+    .arg(ARG)
 );
 
 initial begin

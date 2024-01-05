@@ -1,6 +1,6 @@
 `timescale 1ns/100ps
 
-module cpu_lr_tb;
+module lr_tb;
 
 parameter WIDTH = 8;
 reg CLK, LR_LD;
@@ -8,14 +8,14 @@ reg [WIDTH-1:0] LR_DATA;
 wire [WIDTH-1:0] LR_OUT;
  
     
-cpu_lr #(
+lr #(
     .WIDTH(WIDTH)
 ) 
 UUT (
-    .CLK(CLK),
-    .LR_LD(LR_LD),
-    .LR_DATA(LR_DATA),
-    .LR_OUT(LR_OUT)
+    .clk(CLK),
+    .ld(LR_LD),
+    .data(LR_DATA),
+    .out(LR_OUT)
 );  
 
 
@@ -48,7 +48,7 @@ end
 
 // Writing VCD waveform
 initial begin
-	$dumpfile("cpu_sim.vcd");
+	$dumpfile("./Output/lr_sim.vcd");
 	$dumpvars(0, UUT);
 	$dumpon;
 end

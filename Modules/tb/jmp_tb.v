@@ -1,6 +1,6 @@
 `timescale 1ns/100ps
 
-module cpu_jmp_tb;
+module jmp_tb;
 parameter WIDTH = 8;
 reg CLK;
 reg [1:0] JMP_MODE;
@@ -10,14 +10,14 @@ reg [WIDTH-1:0] BASE_REG_DATA;
 reg [WIDTH-1:0] LR_ADDRESS;
 wire [WIDTH-1:0] ADDRESS_OUT;
 
-cpu_jmp #(.WIDTH(WIDTH))
+jmp #(.WIDTH(WIDTH))
 UUT (
-    .JMP_MODE(JMP_MODE),
-    .BASE_REG_OFFSET(BASE_REG_OFFSET),
-    .BASE_REG_LD(BASE_REG_LD),
-    .BASE_REG_DATA(BASE_REG_DATA),
-    .LR_ADDRESS(LR_ADDRESS),
-    .ADDRESS_OUT(ADDRESS_OUT)
+    .jmp_mode(JMP_MODE),
+    .base_reg_offset(BASE_REG_OFFSET),
+    .base_reg_ld(BASE_REG_LD),
+    .base_reg_data(BASE_REG_DATA),
+    .lr_addr(LR_ADDRESS),
+    .out_addr(ADDRESS_OUT)
 );
 
 initial begin
@@ -68,7 +68,7 @@ end
 
 // Writing VCD waveform
 initial begin
-	$dumpfile("cpu_sim.vcd");
+	$dumpfile("./Output/jmp_sim.vcd");
 	$dumpvars(0, UUT);
 	$dumpon;
 end

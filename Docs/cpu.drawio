@@ -1,14 +1,14 @@
 <mxfile host="65bd71144e" scale="1" border="50">
     <diagram id="46gFqRR7cMOW59YAce9c" name="Page-1">
-        <mxGraphModel dx="608" dy="2154" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="900" background="none" math="0" shadow="0">
+        <mxGraphModel dx="617" dy="2228" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="900" background="none" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
-                <mxCell id="29" value="ID" style="rounded=0;whiteSpace=wrap;html=1;points=[[0,0.11,0,0,0],[0,0.22,0,0,0],[0,0.33,0,0,0],[0,0.44,0,0,0],[0,0.56,0,0,0],[0,0.67,0,0,0],[0,0.78,0,0,0],[0,0.89,0,0,0],[1,0.08,0,0,0],[1,0.17,0,0,0],[1,0.25,0,0,0],[1,0.33,0,0,0],[1,0.42,0,0,0],[1,0.5,0,0,0],[1,0.58,0,0,0],[1,0.67,0,0,0],[1,0.75,0,0,0],[1,0.83,0,0,0],[1,0.92,0,0,0]];" parent="1" vertex="1">
+                <mxCell id="29" value="&lt;p&gt;&lt;span&gt;ID&lt;/span&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;points=[[0,0.11,0,0,0],[0,0.22,0,0,0],[0,0.33,0,0,0],[0,0.44,0,0,0],[0,0.56,0,0,0],[0,0.67,0,0,0],[0,0.78,0,0,0],[0,0.89,0,0,0],[1,0.08,0,0,0],[1,0.17,0,0,0],[1,0.25,0,0,0],[1,0.33,0,0,0],[1,0.42,0,0,0],[1,0.5,0,0,0],[1,0.58,0,0,0],[1,0.67,0,0,0],[1,0.75,0,0,0],[1,0.83,0,0,0],[1,0.92,0,0,0]];fontStyle=1" parent="1" vertex="1">
                     <mxGeometry x="490" y="-1640" width="320" height="320" as="geometry"/>
                 </mxCell>
-                <object label="PC" id="2">
-                    <mxCell style="rounded=0;whiteSpace=wrap;html=1;points=[[0,0.15,0,0,0],[0,0.4,0,0,0],[0,0.65,0,0,0],[0,0.89,0,0,0],[1,0.5,0,0,0]];movable=1;resizable=1;rotatable=1;deletable=1;editable=1;connectable=1;container=0;" parent="1" vertex="1">
+                <object label="&lt;span&gt;PC&lt;/span&gt;" id="2">
+                    <mxCell style="rounded=0;whiteSpace=wrap;html=1;points=[[0,0.15,0,0,0],[0,0.4,0,0,0],[0,0.65,0,0,0],[0,0.89,0,0,0],[1,0.5,0,0,0]];movable=1;resizable=1;rotatable=1;deletable=1;editable=1;connectable=1;container=0;fontStyle=1" parent="1" vertex="1">
                         <mxGeometry x="170" y="-1640" width="112" height="80" as="geometry"/>
                     </mxCell>
                 </object>
@@ -33,7 +33,7 @@
                         <mxPoint x="-34" as="offset"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="73" value="JMP" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=default;fontFamily=Helvetica;fontSize=12;fontColor=default;fillColor=default;points=[[0,0.5,0,0,0],[1,0.17,0,0,0],[1,0.33,0,0,0],[1,0.5,0,0,0],[1,0.67,0,0,0],[1,0.83,0,0,0]];" vertex="1" parent="1">
+                <mxCell id="73" value="&lt;span&gt;JMP&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=default;fontFamily=Helvetica;fontSize=12;fontColor=default;fillColor=default;points=[[0,0.5,0,0,0],[1,0.17,0,0,0],[1,0.33,0,0,0],[1,0.5,0,0,0],[1,0.67,0,0,0],[1,0.83,0,0,0]];fontStyle=1" vertex="1" parent="1">
                     <mxGeometry x="170" y="-1520" width="220" height="90" as="geometry"/>
                 </mxCell>
                 <mxCell id="86" style="edgeStyle=orthogonalEdgeStyle;rounded=0;sketch=0;hachureGap=4;jiggle=2;curveFitting=1;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;fontFamily=Helvetica;fontSize=12;fontColor=default;startArrow=none;startFill=0;endArrow=classic;endFill=1;entryX=0;entryY=0.65;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="73" target="2">
@@ -89,11 +89,11 @@
                         <mxPoint x="-37" y="-3" as="offset"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="63" value="&lt;p&gt;&lt;font style=&quot;font-size: 12px;&quot; face=&quot;Helvetica&quot;&gt;LR&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;hachureGap=4;fontFamily=Architects Daughter;fontSource=https%3A%2F%2Ffonts.googleapis.com%2Fcss%3Ffamily%3DArchitects%2BDaughter;fontSize=20;points=[[0,0.33,0,0,0],[0,0.67,0,0,0],[1,0.33,0,0,0],[1,0.67,0,0,0]];" vertex="1" parent="1">
+                <mxCell id="63" value="&lt;p style=&quot;font-size: 12px;&quot;&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;LR&lt;/span&gt;&lt;/font&gt;&lt;/p&gt;" style="rounded=0;whiteSpace=wrap;html=1;hachureGap=4;fontFamily=Helvetica;fontSize=12;points=[[0,0.33,0,0,0],[0,0.67,0,0,0],[1,0.33,0,0,0],[1,0.67,0,0,0]];fontStyle=1" vertex="1" parent="1">
                     <mxGeometry x="270" y="-1380" width="120" height="60" as="geometry"/>
                 </mxCell>
-                <object label="ROM" addr="addr" id="20">
-                    <mxCell style="rounded=0;whiteSpace=wrap;html=1;points=[[0,0.5,0,0,0],[1,0.26,0,0,0],[1,0.66,0,0,0]];" parent="1" vertex="1">
+                <object label="&lt;span&gt;ROM&lt;/span&gt;" addr="addr" id="20">
+                    <mxCell style="rounded=0;whiteSpace=wrap;html=1;points=[[0,0.5,0,0,0],[1,0.26,0,0,0],[1,0.66,0,0,0]];fontStyle=1" parent="1" vertex="1">
                         <mxGeometry x="320" y="-1640" width="120" height="80" as="geometry"/>
                     </mxCell>
                 </object>

@@ -1,6 +1,6 @@
 `timescale 1ns/100ps
 
-module cpu_mreg_tb;
+module flag_reg_tb;
 
 reg CLK, RST;
 reg Cin, Zin, Bin;
@@ -9,15 +9,15 @@ wire C; //Carry
 wire Z; //Zero
 wire B; //Borrow
 
-cpu_mreg UUT(
-    .CLK(CLK),
-    .RST(RST),
-    .Cin(Cin),
-    .Zin(Zin),
-    .Bin(Bin),
-    .C(C),
-    .Z(Z),
-    .B(B)
+flag_reg UUT(
+    .clk(CLK),
+    .flag_rst(RST),
+    .flag_c_in(Cin),
+    .flag_z_in(Zin),
+    .flag_b_in(Bin),
+    .flag_c(C),
+    .flag_z(Z),
+    .flag_b(B)
 );
 
 initial begin
@@ -67,7 +67,7 @@ end
 
 // Writing VCD waveform
 initial begin
-	$dumpfile("cpu_sim.vcd");
+	$dumpfile("./Output/flag_reg_sim.vcd");
 	$dumpvars(0, UUT);
 	$dumpon;
 end

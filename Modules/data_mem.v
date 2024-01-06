@@ -3,25 +3,33 @@
 module data_mem # (
     parameter WIDTH = 8
 )(  
-    CLK,
-    EN,
-    ADDR,
-    D_IN,
-    D_OUT
+    clk,
+    en,
+    addr,
+    d_in,
+    d_out
 );
-input CLK, EN;
-input [WIDTH-1:0] ADDR;
-input [WIDTH-1:0] D_IN;
-output [WIDTH-1:0] D_OUT;
+input clk, en;
+input [WIDTH-1:0] addr;
+input [WIDTH-1:0] d_in;
+output [WIDTH-1:0] d_out;
 
 reg [WIDTH-1:0] MEM [$pow(2,WIDTH)-1:0];
 
-always @(posedge CLK) begin
-    if(EN) begin
-        MEM[ADDR] <= D_IN;
+integer i = 0;
+
+initial begin
+    for(i=0;i<$pow(2,WIDTH);i++) begin
+        MEM[i] = {WIDTH{1'b0}};
     end
 end
 
-assign D_OUT = MEM[ADDR];
+always @(posedge clk) begin
+    if(en) begin
+        MEM[addr] <= d_in;
+    end
+end
+
+assign d_out = MEM[addr];
 
 endmodule

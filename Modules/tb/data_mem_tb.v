@@ -2,21 +2,21 @@
 
 module data_mem_tb;
 
-parameter W = 8;
+parameter WIDTH = 8;
 reg CLK, EN, WR, RD;
-reg [W-1:0] ADDR;
-reg [W-1:0] D_IN;
-wire [W-1:0] D_OUT;
+reg [WIDTH-1:0] ADDR;
+reg [WIDTH-1:0] D_IN;
+wire [WIDTH-1:0] D_OUT;
 integer i;
 
 data_mem #(
-    .WIDTH(W)
+    .WIDTH(WIDTH)
 ) UUT (
-    .CLK(CLK),
-    .EN(EN),
-    .ADDR(ADDR),
-    .D_IN(D_IN),
-    .D_OUT(D_OUT)
+    .clk(CLK),
+    .en(EN),
+    .addr(ADDR),
+    .d_in(D_IN),
+    .d_out(D_OUT)
 );
 
 initial begin
@@ -26,7 +26,7 @@ initial begin
     EN = 1'b1;
     WAIT(5);
 
-    for(i = 0; i < $pow(2,W)-1; i++) begin
+    for(i = 0; i < $pow(2,WIDTH)-1; i++) begin
         ADDR = ADDR + 8'h01;
         D_IN = D_IN + 8'h05;
         WAIT(5);
@@ -37,7 +37,7 @@ initial begin
     EN = 1'b0;
     WAIT(20);
 
-    for(i = 0; i < $pow(2,W)-1; i++) begin
+    for(i = 0; i < $pow(2,WIDTH)-1; i++) begin
         ADDR = ADDR + 8'h01;
         WAIT(5);
     end
@@ -54,7 +54,7 @@ end
 
 // Writing VCD waveform
 initial begin
-	$dumpfile("cpu_sim.vcd");
+	$dumpfile("./Output/data_mem_sim.vcd");
 	$dumpvars(0, UUT);
 	$dumpon;
 end

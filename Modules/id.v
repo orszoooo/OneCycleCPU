@@ -49,15 +49,13 @@ output reg d_mem_addr_mode; //0 - ADDR from operand, 1 - ADDR form R0-R7
 output reg en_d_mem;
 
 output reg en_acc;
-output reg [1:0] jmp_mode; // 00 - absolute, 01 - relative to base address register, 11 - CALL
+output reg [1:0] jmp_mode; // 00 - absolute and CALL, 01 - relative to base address register, 11 - RET
 
 //BASE ADDRESS REGISTER
 output reg [WIDTH-1:0] base_reg_offset;
 output reg base_reg_ld;
 output reg [WIDTH-1:0] base_reg_data;
 output reg lr_ld;
-
-//TO DO: STACK, MAIN REGISTER
 
 always @(*) begin
     alu_out = {ALU_INSTR_WIDTH{1'b1}}; //4'hF

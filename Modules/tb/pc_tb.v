@@ -29,12 +29,23 @@ initial begin
     RST = 1'b0;
 
     WAIT(10);
-    ADDR = 8'hA7;
     LD = 1'b1;
-
     WAIT(1);
     LD = 1'b0;
+    ADDR = 8'hA7;
+    
+    WAIT(1);
 
+    LD = 1'b0;
+    WAIT(10);
+    LD = 1'b1;
+    WAIT(1);
+    LD = 1'b0;
+    ADDR = 8'h69;
+    
+    WAIT(1);
+
+    LD = 1'b0;
 
     WAIT(20);
     $finish;
@@ -48,7 +59,7 @@ end
 
 // Writing VCD waveform
 initial begin
-	$dumpfile("pc_sim.vcd");
+	$dumpfile("./Output/pc_sim.vcd");
 	$dumpvars(0, UUT);
 	$dumpon;
 end

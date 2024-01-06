@@ -28,7 +28,6 @@ always @(posedge clk) begin
     else begin
         pc_out <= pc_out + 1'b1;
     end
-
 end
-    
+
 endmodule

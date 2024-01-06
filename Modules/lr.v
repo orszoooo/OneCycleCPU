@@ -15,11 +15,16 @@ output reg [WIDTH-1:0] out;
 
 reg [WIDTH-1:0] LR_REG;
 
+initial begin
+    LR_REG = {WIDTH{1'b0}};
+end
+
+always @(posedge ld) begin
+    LR_REG <= data;
+end
+
 always @(posedge clk) begin
-    if(ld) begin
-        LR_REG = data;
-    end
-    out = LR_REG;
+    out <= LR_REG;
 end
 
 endmodule

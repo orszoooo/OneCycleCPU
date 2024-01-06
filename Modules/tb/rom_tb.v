@@ -3,6 +3,7 @@
 module rom_tb;
 reg CLK;
 parameter WIDTH = 8;
+parameter SIZE = 32;
 reg [WIDTH-1:0] ADDR;
 wire [WIDTH-1:0] INSTR;
 wire [WIDTH-1:0] ARG;
@@ -15,23 +16,18 @@ UUT (
     .arg(ARG)
 );
 
+integer i = 0;
+
 initial begin
     $display("Simulation of %m started.");
     ADDR = 4'b0000;
     WAIT(1);
-    ADDR = ADDR + 1'b1;
-    WAIT(1);
-    ADDR = ADDR + 1'b1;
-    WAIT(1);
-    ADDR = ADDR + 1'b1;
-    WAIT(1);
-    ADDR = ADDR + 1'b1;
-    WAIT(1);
-    ADDR = ADDR + 1'b1;
-    WAIT(1);
-    ADDR = ADDR + 1'b1;
-    WAIT(2);
-    ADDR = ADDR + 1'b1;
+
+    for(i=0;i<SIZE-1;i++) begin
+        ADDR = ADDR + 1'b1;
+        WAIT(1);
+    end
+
     WAIT(10);
     $finish;
 end

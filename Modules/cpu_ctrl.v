@@ -97,7 +97,7 @@ lr #(.WIDTH(WIDTH))
 lr_module (
     .clk(clk),
     .ld(lr_ld),
-    .data(base_reg_offset),
+    .data(rom_addr),
     .out(lr_jmp_addr)   
 );
 

@@ -1,0 +1,1 @@
+1. Change PORT to seperate memory that will hold the state of inout PORT. This memory could be updated by the cpu and external I/O controller.

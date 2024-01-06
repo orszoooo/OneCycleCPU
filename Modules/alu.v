@@ -1,110 +1,49 @@
 `timescale 1ns/100ps
+`include "instr_set.v"
 
 module alu #(
-    parameter DWIDTH = 8
+    parameter WIDTH = 8,
+    parameter IWIDTH = 4
 )(
-    in_instr,
-    IN_A,
-    IN_B,
-    Cin,
-    Cout,
-    Bin,
-    Bout,
-    OUT
+    instr,
+    in_a,
+    in_b,
+    alu_c_in,
+    alu_b_in,
+    alu_c_out,
+    alu_b_out,
+    alu_out
 );
 
-parameter IWIDTH = 4;
-input [IWIDTH-1:0] in_instr;
-input [DWIDTH-1:0] IN_A;
-input [DWIDTH-1:0] IN_B;
-input Cin,Bin;
-output Cout, Bout;
-output reg [DWIDTH-1:0] OUT;
+input [IWIDTH-1:0] instr;
+input [WIDTH-1:0] in_a;
+input [WIDTH-1:0] in_b;
 
-reg [DWIDTH-1:0] IN_ADD_SUB;
-reg EN_ADD_nSUB;
-wire [DWIDTH-1:0] OUT_ADD;
-wire [DWIDTH-1:0] OUT_SUB;
-wire [DWIDTH-1:0] OUT_ADD_SUB;
+input alu_c_in;
+input alu_b_in;
 
-alu_add #(
-    .WIDTH(DWIDTH)
-)
-adder (
-    .EN(EN_ADD_nSUB),
-    .IN_A(IN_A),
-    .IN_B(IN_ADD_SUB),
-    .IN_C(Cin), 
-    .OUT(OUT_ADD),
-    .C_OUT(Cout)
-);
+output reg [WIDTH-1:0] alu_out;
+output reg alu_c_out;
+output reg alu_b_out;
 
-alu_sub #(
-    .WIDTH(DWIDTH)
-)
-subtactor (
-    .EN(!EN_ADD_nSUB),
-    .IN_A(IN_A),
-    .IN_B(IN_ADD_SUB),
-    .IN_Bin(Bin), 
-    .OUT(OUT_SUB),
-    .B_OUT(Bout)
-);
-
-assign OUT_ADD_SUB = (EN_ADD_nSUB ? OUT_ADD : OUT_SUB);
+initial begin
+    alu_c_out = 1'b0;
+    alu_b_out = 1'b0;
+end
 
 always @(*) begin
-    EN_ADD_nSUB = 1'b1; //uses ADDER
-    IN_ADD_SUB = IN_B;
-
-    case(in_instr)
-        4'h0: begin  //NOT
-            OUT = ~IN_A;
-        end
-        
-        4'h1: begin //XOR
-            OUT = IN_A ^ IN_B;
-        end
-        
-        4'h2: begin //OR
-            OUT = IN_A | IN_B;
-        end
-        4'h3: begin //AND
-            OUT = IN_A & IN_B;
-        end
-        
-        4'h4: begin //SUB 
-            EN_ADD_nSUB = 1'b0;
-            OUT = OUT_ADD_SUB;
-        end
-        
-        4'h5: begin //ADD
-            OUT = OUT_ADD_SUB;
-        end
-        
-        4'h6: begin //RR
-            OUT = {1'b0,IN_A[DWIDTH-1:1]};
-        end
-        
-        4'h7: begin //RL
-            OUT = {IN_A[DWIDTH-2:0],1'b0};
-        end
-        
-        4'h8: begin // DEC
-            EN_ADD_nSUB = 1'b0;
-            if(!Bin) IN_ADD_SUB = {{DWIDTH-1{1'b0}},1'b1}; 
-            else IN_ADD_SUB = {DWIDTH{1'b0}}; 
-            OUT = OUT_ADD_SUB;
-        end
-
-        4'h9: begin //INC
-            if(!Cin) IN_ADD_SUB = {{DWIDTH-1{1'b0}},1'b1}; 
-            else IN_ADD_SUB = {DWIDTH{1'b0}}; 
-            OUT = OUT_ADD_SUB;
-        end
-        default: begin //LD, ST, NOP, RST
-            OUT = IN_B;
-        end
+    case({{(WIDTH-IWIDTH){1'b0}}, instr}) //Padding MSBs with zeros
+        `NOT: alu_out = ~in_a;
+        `XOR: alu_out = in_a ^ in_b;
+        `OR: alu_out = in_a | in_b;
+        `AND: alu_out = in_a & in_b;
+        `SUB: {alu_b_out, alu_out} = in_a - in_b - alu_b_in;
+        `ADD: {alu_c_out, alu_out} = in_a + in_b + alu_c_in;
+        `RR: alu_out = {1'b0,in_a[WIDTH-1:1]};
+        `RL: alu_out = {in_a[WIDTH-2:0],1'b0};
+        `DEC: {alu_b_out, alu_out} = in_a - {{WIDTH{1'b0}},1'b1};
+        `INC: {alu_c_out, alu_out} = in_a + {{WIDTH{1'b0}},1'b1};
+        default: alu_out = in_b; //LD, ST, NOP, RST etc.
     endcase
 end
 

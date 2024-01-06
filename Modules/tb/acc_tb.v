@@ -1,20 +1,20 @@
 `timescale 1ns/100ps
 
 module acc_tb;
-parameter W = 8;
+parameter WIDTH = 8;
 reg CLK, EN;
-reg [W-1:0] IN;
-wire [W-1:0] OUT;
-wire Z;
+reg [WIDTH-1:0] IN;
+wire [WIDTH-1:0] OUT;
+wire Z_OUT;
 
 acc #(
-    .WIDTH(W)) 
+    .WIDTH(WIDTH)) 
 UUT (
-    .CLK(CLK),
-    .EN(EN),
-    .IN(IN),
-    .OUT(OUT),
-    .Z(Z)
+    .clk(CLK),
+    .en(EN),
+    .in(IN),
+    .out(OUT),
+    .z_out(Z_OUT)
 );
 
 initial begin
@@ -44,7 +44,7 @@ end
 
 // Writing VCD waveform
 initial begin
-	$dumpfile("cpu_sim.vcd");
+	$dumpfile("./Output/acc_sim.vcd");
 	$dumpvars(0, UUT);
 	$dumpon;
 end

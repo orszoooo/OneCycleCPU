@@ -1,10 +1,12 @@
+`timescale 1ns/100ps
+
 module led_disp (
 	input[3:0] in,
 	output reg[6:0] out
 );
 	
 	always @ (*)
-	case(IN_BCD) //a b c d e f g 
+	case(in) //a b c d e f g 
 		4'h0: out = 7'b0000001;
 		4'h1: out = 7'b1001111;
 		4'h2: out = 7'b0010010;

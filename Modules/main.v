@@ -175,4 +175,10 @@ flag_reg flag_module(
     .flag_b(b_flag_reg_alu)
 );
 
+// Output assign
+assign pc = rom_addr;
+assign instr = rom_instr;
+assign arg = rom_arg;
+assign acc = data_bus;
+
 endmodule

@@ -1,17 +1,21 @@
 #!/bin/bash
-
-if [ "$#" -eq 0 ]; then
-    echo Provide module name as an argument i.e. ./simul.sh pc 
-    exit 1
-fi
-
 rm -f ./Output/$1_sim.vcd
 
 modules_dir="../Modules"
 modules_list=""
 
-if [ "$1" = "cpu_ctrl" ]; then
+if [ "$#" -eq 0 ]; then
+    echo "Provide name of module you want to simulate i.e. ./simul.sh main or ./simul.sh pc"
+    exit 1
+fi
+
+
+if [ "$1" = "main" ]; then
+    modules_input="main pc rom id jmp lr reg_f data_mem alu acc flag_reg"
+elif [ "$1" = "cpu_ctrl" ]; then
     modules_input="cpu_ctrl pc rom id jmp lr"
+elif [ "$1" = "cpu_data" ]; then
+    modules_input="cpu_data reg_f data_mem alu acc flag_reg"
 else
     modules_input="$@"
 fi

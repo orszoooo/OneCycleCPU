@@ -1,12 +1,23 @@
 `timescale 1ns/100ps
 
-module cpu_main_tb;
-reg CLK;
-wire [7:0] PORT;
+module main_tb;
+parameter WIDTH = 8;
 
-cpu_main UUT (
-    .CLK(CLK),
-	.PORT(PORT)
+reg CLK;
+reg [WIDTH-1:0] PORT;
+
+wire [WIDTH-1:0] PC;
+wire [WIDTH-1:0] INSTR;
+wire [WIDTH-1:0] ARG;
+wire [WIDTH-1:0] ACC;
+
+main UUT (
+    .clk(CLK),
+	.port(PORT),
+	.pc(PC),
+	.instr(INSTR),
+	.arg(ARG),
+	.acc(ACC)
 );
 
 initial begin
@@ -23,7 +34,7 @@ end
 
 // Writing VCD waveform
 initial begin
-	$dumpfile("cpu_sim.vcd");
+	$dumpfile("./Output/main_sim.vcd");
 	$dumpvars(0, UUT);
 	$dumpon;
 end

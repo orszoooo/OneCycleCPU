@@ -2,123 +2,119 @@
 
 module cpu_data #(
     parameter WIDTH = 8,
-    parameter IWIDTH = 5,
+    parameter IWIDTH = 4,
     parameter REG_SIZE = 9,
     parameter REG_F_SEL_SIZE = 4,
     parameter IN_B_SEL_SIZE = 2
 )
 (
-    CLK,
+    clk,
+    pc_rst,
 
     //REG_F
-    REG_F_SEL,
-    EN_REG_F,
-    PORT,
+    reg_f_sel,
+    en_reg_f,
+    port,
 
     //DATA_MEM
-    D_MEM_ADDR,
-    D_MEM_ADDR_MODE, 
-    EN_D_MEM,
+    d_mem_addr,
+    d_mem_addr_mode, 
+    en_d_mem,
 
-    IN_B_SEL,
-    IMM,
+    in_b_sel,
+    imm,
 
-    ALU_OUT,
-    EN_ACC,
-    Z
+    alu_out,
+    en_acc,
+    flag_z_out
 );
 
-input CLK;
+input clk;
+input pc_rst;
 
 //REG_F
-input [REG_F_SEL_SIZE-1:0] REG_F_SEL;
-input EN_REG_F;
-inout [WIDTH-1:0] PORT;
+input [REG_F_SEL_SIZE-1:0] reg_f_sel;
+input en_reg_f;
+inout [WIDTH-1:0] port;
 
 //DATA_MEM
-input [WIDTH-1:0] D_MEM_ADDR;
-input EN_D_MEM;
+input [WIDTH-1:0] d_mem_addr;
+input en_d_mem;
 
 //INPUT B SOURCE CTRL
-input [IN_B_SEL_SIZE-1:0] IN_B_SEL;
-input [WIDTH-1:0] IMM; //Immediate data
-wire [WIDTH-1:0] IN_B;
+input [IN_B_SEL_SIZE-1:0] in_b_sel;
+input [WIDTH-1:0] imm; //Immediate data
+wire [WIDTH-1:0] in_b;
 
 //DATA_MEM ADDRESS SOURCE CTRL
-input D_MEM_ADDR_MODE; //0 - ADDR from operand, 1 - ADDR form R0-R7
-wire [WIDTH-1:0] DATA_MEM_ADDR_IN;
+input d_mem_addr_mode; //0 - addr from operand, 1 - addr form R0-R7
+wire [WIDTH-1:0] data_mem_addr_in;
 
-input [IWIDTH-2:0] ALU_OUT;
-input EN_ACC;   
+input [IWIDTH-1:0] alu_out;
+input en_acc;   
 
-wire [WIDTH-1:0] DATA_BUS;
-wire [WIDTH-1:0] REG_F_OUT;
-wire [WIDTH-1:0] DATA_MEM_OUT;
-wire [WIDTH-1:0] ACC_IN;
-wire Z_ACC_MREG, C_ALU_MREG, C_MREG_ALU, B_ALU_MREG, B_MREG_ALU;
-output Z;
+wire [WIDTH-1:0] data_bus;
+wire [WIDTH-1:0] reg_f_out;
+wire [WIDTH-1:0] data_mem_out;
+wire [WIDTH-1:0] acc_in;
+wire z_acc_flag_reg, c_alu_flag_reg, c_flag_reg_alu, b_alu_flag_reg, b_flag_reg_alu;
+output flag_z_out;
 
 reg_f #(.WIDTH(WIDTH), .SIZE(REG_SIZE))
 reg_f_module (
-    .CLK(CLK),
-    .IN(DATA_BUS),
-    .EN(EN_REG_F),
-    .SEL(REG_F_SEL),
-    .PORT(PORT),
-    .OUT(REG_F_OUT)
+    .clk(clk),
+    .in(data_bus),
+    .en(en_reg_f),
+    .sel(reg_f_sel),
+    .port(port),
+    .out(reg_f_out)
 );
 
 data_mem #(.WIDTH(WIDTH))
 data_mem_module (
-    .CLK(CLK),
-    .EN(EN_D_MEM),
-    .ADDR(DATA_MEM_ADDR_IN),
-    .D_IN(DATA_BUS),
-    .D_OUT(DATA_MEM_OUT)
+    .clk(clk),
+    .en(en_d_mem),
+    .addr(data_mem_addr_in),
+    .d_in(data_bus),
+    .d_out(data_mem_out)
 );
 
-//IN_B MUX
-assign IN_B = (IN_B_SEL[1] ? DATA_MEM_OUT : (IN_B_SEL[0] ? REG_F_OUT : IMM));
+//in_b MUX
+assign in_b = (in_b_sel[1] ? data_mem_out : (in_b_sel[0] ? reg_f_out : imm));
 
 //DATA_MEM_ADDR MUX
-assign DATA_MEM_ADDR_IN = (D_MEM_ADDR_MODE ? REG_F_OUT : D_MEM_ADDR);
+assign data_mem_addr_in = (d_mem_addr_mode ? reg_f_out : d_mem_addr);
 
-alu #(.DWIDTH(WIDTH))
+alu #(.WIDTH(WIDTH), .IWIDTH(IWIDTH))
 alu_module (
-    .IN_INSTR(ALU_OUT),
-    .IN_A(DATA_BUS),
-    .IN_B(IN_B),
-    .Cin(C_MREG_ALU),
-    .Cout(C_ALU_MREG),
-    .Bin(B_MREG_ALU),
-    .Bout(B_ALU_MREG),
-    .OUT(ACC_IN)
+    .instr(alu_out),
+    .in_a(data_bus),
+    .in_b(in_b),
+    .alu_c_in(c_flag_reg_alu),
+    .alu_c_out(c_alu_flag_reg),
+    .alu_b_in(b_flag_reg_alu),
+    .alu_b_out(b_alu_flag_reg),
+    .alu_out(acc_in)
 );
 
 acc #(.WIDTH(WIDTH))
 acc_module (
-    .CLK(CLK),
-    .EN(EN_ACC),
-    .IN(ACC_IN),
-    .OUT(DATA_BUS),
-    .Z(Z_ACC_MREG)
+    .clk(clk),
+    .en(en_acc),
+    .in(acc_in),
+    .out(data_bus),
+    .z_out(z_acc_flag_reg)
 );
 
-reg MREG_RST = 1'b1;
-
-always @(posedge CLK) begin
-    if(MREG_RST) MREG_RST = 1'b0;
-end
-
-cpu_mreg mreg_module(
-    .CLK(CLK),
-    .RST(MREG_RST),
-    .Cin(C_ALU_MREG),
-    .Zin(Z_ACC_MREG),
-    .Bin(B_ALU_MREG),
-    .C(C_MREG_ALU),
-    .Z(Z),
-    .B(B_MREG_ALU)
+flag_reg flag_module(
+    .clk(clk),
+    .flag_rst(pc_rst),
+    .flag_c_in(c_alu_flag_reg),
+    .flag_z_in(z_acc_flag_reg),
+    .flag_b_in(b_alu_flag_reg),
+    .flag_c(c_flag_reg_alu),
+    .flag_z(flag_z_out),
+    .flag_b(b_flag_reg_alu)
 );
 
 endmodule

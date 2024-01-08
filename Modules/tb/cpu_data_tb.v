@@ -3,12 +3,13 @@
 module cpu_data_tb;
 
 parameter WIDTH = 8;
-parameter IWIDTH = 5;
+parameter IWIDTH = 4;
 parameter REG_SIZE = 9;
 parameter REG_F_SEL_SIZE = 4;
 parameter IN_B_SEL_SIZE = 2;
 
 reg CLK;
+reg PC_RST;
 
 //REG_F
 reg [REG_F_SEL_SIZE-1:0] REG_F_SEL;
@@ -23,35 +24,38 @@ reg EN_D_MEM;
 reg [IN_B_SEL_SIZE-1:0] IN_B_SEL;
 reg [WIDTH-1:0] IMM; //Immediate data
 
-reg [IWIDTH-2:0] ALU_OUT;
+reg [IWIDTH-1:0] ALU_OUT;
 reg EN_ACC;   
-wire Z;
+wire FLAG_Z_OUT;
+
 cpu_data #(.WIDTH(WIDTH),.IWIDTH(IWIDTH),.REG_SIZE(REG_SIZE),.REG_F_SEL_SIZE(REG_F_SEL_SIZE),.IN_B_SEL_SIZE(IN_B_SEL_SIZE))
 UUT(
-    .CLK(CLK),
+    .clk(CLK),
+    .pc_rst(PC_RST),
 
     //REG_F
-    .REG_F_SEL(REG_F_SEL),
-    .EN_REG_F(EN_REG_F),
-    .PORT(PORT),
+    .reg_f_sel(REG_F_SEL),
+    .en_reg_f(EN_REG_F),
+    .port(PORT),
 
     //DATA_MEM
-    .D_MEM_ADDR(D_MEM_ADDR),
-    .D_MEM_ADDR_MODE(D_MEM_ADDR_MODE), 
-    .EN_D_MEM(EN_D_MEM),
+    .d_mem_addr(D_MEM_ADDR),
+    .d_mem_addr_mode(D_MEM_ADDR_MODE), 
+    .en_d_mem(EN_D_MEM),
 
-    .IN_B_SEL(IN_B_SEL),
-    .IMM(IMM),
+    .in_b_sel(IN_B_SEL),
+    .imm(IMM),
 
-    .ALU_OUT(ALU_OUT),
-    .EN_ACC(EN_ACC),
-    .Z(Z)
+    .alu_out(ALU_OUT),
+    .en_acc(EN_ACC),
+    .flag_z_out(FLAG_Z_OUT)
 );
 
 
 initial begin
     $display("Simulation of %m started.");
-
+    PC_RST = 1'b0;
+    EN_REG_F = 1'b0;
     REG_F_SEL = 4'h0;
     D_MEM_ADDR = 8'h00;
     D_MEM_ADDR_MODE = 1'b0;
@@ -129,7 +133,7 @@ end
 
 // Writing VCD waveform
 initial begin
-	$dumpfile("cpu_sim.vcd");
+	$dumpfile("./Output/cpu_data_sim.vcd");
 	$dumpvars(0, UUT);
 	$dumpon;
 end

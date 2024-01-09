@@ -16,6 +16,7 @@ module main #(
     instr,
     arg,
     acc,
+	in_b_dbg
 );
 
 input clk;
@@ -25,8 +26,8 @@ output [WIDTH-1:0] pc;
 output [WIDTH-1:0] instr;
 output [WIDTH-1:0] arg;
 output [WIDTH-1:0] acc;
+output [WIDTH-1:0] in_b_dbg;
 
-wire z_flag;
 wire pc_rst, pc_ld; 
 wire [WIDTH-1:0] rom_addr;
 wire [WIDTH-1:0] rom_instr;
@@ -79,7 +80,7 @@ id #(.WIDTH(WIDTH), .ALU_INSTR_WIDTH(ALU_INSTR_WIDTH), .REG_F_SEL_SIZE(REG_F_SEL
 id_module (
     .instr(rom_instr),
     .arg(rom_arg),
-    .z_flag(z_flag),
+    .z_flag(flag_z_out),
     .pc_rst(pc_rst),
     .pc_ld(pc_ld),
     .alu_out(alu_out),
@@ -180,5 +181,6 @@ assign pc = rom_addr;
 assign instr = rom_instr;
 assign arg = rom_arg;
 assign acc = data_bus;
+assign in_b_dbg = in_b;
 
 endmodule

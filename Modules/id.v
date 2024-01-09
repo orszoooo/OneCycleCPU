@@ -96,13 +96,13 @@ always @(*) begin
     end
     else if(instr == `LDR) begin
         alu_out = instr[ALU_INSTR_WIDTH-1:0];
-        reg_f_sel = arg; //LAST 4 bits of instr
+        reg_f_sel = arg[3:0]; //LAST 4 bits of instr
         in_b_sel = 2'b01;
         en_acc = 1'b1;
     end
     else if(instr == `STR) begin
         alu_out = instr[ALU_INSTR_WIDTH-1:0];
-        reg_f_sel = arg;
+        reg_f_sel = arg[3:0];
         en_reg_f = 1'b1;
     end
     else if(instr == `BAR) begin
@@ -140,7 +140,7 @@ always @(*) begin
             instr == `SUBR
     ) begin
         alu_out = instr[ALU_INSTR_WIDTH-1:0];
-        reg_f_sel = arg; 
+        reg_f_sel = arg[3:0]; 
         in_b_sel = 2'b01;
         en_acc = 1'b1;
     end
@@ -177,7 +177,7 @@ always @(*) begin
     end
     else if(instr == `LDAR) begin
         alu_out = instr[ALU_INSTR_WIDTH-1:0];
-        reg_f_sel = arg;
+        reg_f_sel = arg[3:0];
         d_mem_addr_mode = 1'b1;
         in_b_sel = 2'b10; 
         en_acc = 1'b1;

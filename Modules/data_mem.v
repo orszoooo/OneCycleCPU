@@ -14,12 +14,12 @@ input [WIDTH-1:0] addr;
 input [WIDTH-1:0] d_in;
 output [WIDTH-1:0] d_out;
 
-reg [WIDTH-1:0] MEM [$pow(2,WIDTH)-1:0];
+reg [WIDTH-1:0] MEM [(2**WIDTH)-1:0];
 
 integer i = 0;
 
 initial begin
-    for(i=0;i<$pow(2,WIDTH);i++) begin
+    for(i=0;i<(2**WIDTH);i=i+1) begin
         MEM[i] = {WIDTH{1'b0}};
     end
 end

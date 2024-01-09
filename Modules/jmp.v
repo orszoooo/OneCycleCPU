@@ -20,10 +20,8 @@ output [WIDTH-1:0] out_addr;
 
 reg [WIDTH-1:0] BASE_ADDR = {WIDTH{1'b0}};
 
-always @(*) begin
-    if(base_reg_ld) begin
-        BASE_ADDR = base_reg_data;
-    end
+always @(posedge base_reg_ld) begin
+	BASE_ADDR = base_reg_data;
 end
 
 assign out_addr = (jmp_mode[0] ? ((jmp_mode[1] ? lr_addr : BASE_ADDR) + base_reg_offset) : base_reg_offset); 

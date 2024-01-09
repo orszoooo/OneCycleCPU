@@ -31,6 +31,7 @@ output [DISP_WIDTH-1:0] acc_disp2;
 wire [WIDTH-1:0] instr_hex;
 wire [WIDTH-1:0] arg_hex;
 wire [WIDTH-1:0] acc_hex;
+wire [WIDTH-1:0] in_b_hex;
 
 main main_module(
     .clk(clk),
@@ -38,7 +39,8 @@ main main_module(
     .pc(pc_led),
     .instr(instr_hex),
     .arg(arg_hex),
-    .acc(acc_hex)
+    .acc(acc_hex),
+	 .in_b_dbg(in_b_hex)
 );
 
 led_disp instr_7seg1(

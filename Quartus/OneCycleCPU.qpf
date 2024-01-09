@@ -19,13 +19,13 @@
 #
 # Quartus Prime
 # Version 22.1std.0 Build 915 10/25/2022 SC Standard Edition
-# Date created = 12:22:27  grudnia 04, 2023
+# Date created = 11:36:21  stycznia 08, 2024
 #
 # -------------------------------------------------------------------------- #
 
 QUARTUS_VERSION = "22.1"
-DATE = "12:22:27  grudnia 04, 2023"
+DATE = "11:36:21  stycznia 08, 2024"
 
 # Revisions
 
-PROJECT_REVISION = "CISCcpu"
+PROJECT_REVISION = "OneCycleCPU"

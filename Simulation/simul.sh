@@ -1,5 +1,5 @@
 #!/bin/bash
-rm -f ./Output/$1_sim.vcd
+
 
 modules_dir="../Modules"
 modules_list=""
@@ -8,7 +8,6 @@ if [ "$#" -eq 0 ]; then
     echo "Provide name of module you want to simulate i.e. ./simul.sh main or ./simul.sh pc"
     exit 1
 fi
-
 
 if [ "$1" = "main" ]; then
     modules_input="main pc rom id jmp lr reg_f data_mem alu acc flag_reg"
@@ -26,6 +25,8 @@ for i in $modules_input
 do  
   modules_list+="$modules_dir/$i.v "
 done
+
+rm -f ./Output/$1_sim.vcd
 
 iverilog -Wall -s $1_tb -o ./Output/$1_sim "$modules_dir"/tb/$1_tb.v $modules_list 
 

@@ -131,6 +131,7 @@ always @(*) begin
             instr == `INC 
     ) begin
         alu_out = instr[ALU_INSTR_WIDTH-1:0];
+        d_mem_addr = arg;
         en_acc = 1'b1;
     end 
     else if(instr == `XORR ||

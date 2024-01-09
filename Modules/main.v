@@ -56,6 +56,7 @@ wire [WIDTH-1:0] data_mem_out;
 wire [WIDTH-1:0] acc_in;
 wire z_acc_flag_reg, c_alu_flag_reg, c_flag_reg_alu, b_alu_flag_reg, b_flag_reg_alu;
 wire flag_z_out;
+wire alu_flag_reg_valid;
 
 
 //=======CPU CTRL=======
@@ -153,6 +154,7 @@ alu_module (
     .alu_c_out(c_alu_flag_reg),
     .alu_b_in(b_flag_reg_alu),
     .alu_b_out(b_alu_flag_reg),
+    .alu_flag_valid(alu_flag_reg_valid),
     .alu_out(acc_in)
 );
 
@@ -168,6 +170,7 @@ acc_module (
 flag_reg flag_module(
     .clk(clk),
     .flag_rst(pc_rst),
+    .flag_cb_valid(alu_flag_reg_valid),
     .flag_c_in(c_alu_flag_reg),
     .flag_z_in(z_acc_flag_reg),
     .flag_b_in(b_alu_flag_reg),

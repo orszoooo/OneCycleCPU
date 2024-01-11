@@ -6,6 +6,10 @@ Aim of this project is to design simple microprocessor in which every instructio
 
 **Register** File holds 9 registers noted as R0, R1, ... R8. R8 is special register and will be used for I/O by PORT. At the moment only reading from R8 is possible by setting instruction operand to 4'h9. 
 
+**Accumulator** - ACC
+
+**Flag register** holds state of three flags: Z - Zero flag, C - Carry flag, B - Borrow flag. If value in ACC is equal to 00h then Z is set to 1. C and B flags are used during addition, subtration, incrementation and decrementation by the Arithmetic Logic Unit(ALU). 
+
 ## Instruction format
 **8-bit Op Code + 8-bit Operand** 
 
@@ -20,8 +24,6 @@ i.e. ADD 32 -> 0532
 1F00 //RST 
 ```
 Simple addition using register 1(R1) and immediate variable. 
-
-*ACC - Accumulator*
 
 ## Instruction set
 Instruction|Op Code(8-bit Hex)|Operand(8-bit)|Description
@@ -53,7 +55,7 @@ RET|17h|Not used|Ends the CALL and goes back to address stored in LR incremented
 JZ|18h|Address|Performs absolute jump if Zero flag(Z) is set to 1
 JZO|19h|Offset|Performs relative(to base address) jump if Zero flag(Z) is set to 1
 LDI|1Ah|Immediate variable|Loads immediate variable to ACC
-LDAR|1Dh|Register in Register File(R0-R8)|Loads variable to ACC from data memory. Address pointing memory cell is stored and taken from selected register.
+LDAR|1Dh|Register in Register File(R0-R8)|Loads variable to ACC from data memory. Address pointing memory cell is stored and taken from selected register
 NOP|1Eh|Not used|For one clock cycle does nothing. Usefull when there is need to wait for some process to finish
 RST|1Fh|Not used|Resets the Program Counter and clears Flag Register. Starts the program execution from the begining.
 

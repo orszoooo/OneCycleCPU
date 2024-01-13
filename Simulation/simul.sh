@@ -1,5 +1,10 @@
 #!/bin/bash
 
+test -d ./Output
+
+if [ $? -ne 0 ]; then
+    mkdir Output
+fi
 
 modules_dir="../Modules"
 modules_list=""
@@ -12,7 +17,7 @@ fi
 if [ "$1" = "main" ]; then
     modules_input="main pc rom id jmp lr reg_f data_mem alu acc flag_reg"
 elif [ "$1" = "main_visual" ]; then
-    modules_input="main_visual led_disp main pc rom id jmp lr reg_f data_mem alu acc flag_reg"
+    modules_input="main_visual led_disp main pc rom id jmp lr reg_f data_mem alu acc flag_reg clk_div"
 elif [ "$1" = "cpu_ctrl" ]; then
     modules_input="cpu_ctrl pc rom id jmp lr"
 elif [ "$1" = "cpu_data" ]; then

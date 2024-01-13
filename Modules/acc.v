@@ -28,6 +28,6 @@ always @(posedge clk) begin
     end
 end
 
-assign z_out = (out == {WIDTH{1'b0}}) ? 1'b1 : 1'b0; 
+assign z_out = ((in == {WIDTH{1'b0}} && en) || (out == {WIDTH{1'b0}})) ? 1'b1 : 1'b0; 
 
 endmodule

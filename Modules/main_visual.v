@@ -6,6 +6,7 @@ module main_visual #(
 )
 (
     clk,
+    clk_en,
     port_sw,
 
     pc_led,
@@ -14,10 +15,12 @@ module main_visual #(
     arg_disp1,
     arg_disp2,    
     acc_disp1,
-    acc_disp2
+    acc_disp2,
+    clk_sig
 );
 
 input clk;
+input clk_en;
 input [WIDTH-1:0] port_sw;
 
 output [WIDTH-1:0] pc_led;
@@ -27,20 +30,28 @@ output [DISP_WIDTH-1:0] arg_disp1;
 output [DISP_WIDTH-1:0] arg_disp2;
 output [DISP_WIDTH-1:0] acc_disp1;
 output [DISP_WIDTH-1:0] acc_disp2;
+output clk_sig;
 
 wire [WIDTH-1:0] instr_hex;
 wire [WIDTH-1:0] arg_hex;
 wire [WIDTH-1:0] acc_hex;
 wire [WIDTH-1:0] in_b_hex;
+wire clk_1Hz;
+
+clk_div clk1Hz( //50 MHz to 1Hz
+    .en(clk_en),
+    .clk_in(clk),
+    .clk_out(clk_1Hz)
+);
 
 main main_module(
-    .clk(clk),
+    .clk(clk_1Hz),
     .port(port_sw),
     .pc(pc_led),
     .instr(instr_hex),
     .arg(arg_hex),
     .acc(acc_hex),
-	 .in_b_dbg(in_b_hex)
+	.in_b_dbg(in_b_hex)
 );
 
 led_disp instr_7seg1(
@@ -72,5 +83,7 @@ led_disp acc_7seg2(
     .in(acc_hex[3:0]),
     .out(acc_disp2)
 );
+
+assign clk_sig = clk_1Hz;
 
 endmodule

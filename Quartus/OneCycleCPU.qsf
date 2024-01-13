@@ -43,21 +43,6 @@ set_global_assignment -name TOP_LEVEL_ENTITY main_visual
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 22.1STD.0
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "11:36:21  STYCZNIA 08, 2024"
 set_global_assignment -name LAST_QUARTUS_VERSION "22.1std.0 Standard Edition"
-set_global_assignment -name VERILOG_FILE ../Modules/rom.v
-set_global_assignment -name VERILOG_FILE ../Modules/reg_f.v
-set_global_assignment -name VERILOG_FILE ../Modules/pc.v
-set_global_assignment -name VERILOG_FILE ../Modules/main_visual.v
-set_global_assignment -name VERILOG_FILE ../Modules/main.v
-set_global_assignment -name VERILOG_FILE ../Modules/lr.v
-set_global_assignment -name VERILOG_FILE ../Modules/led_disp.v
-set_global_assignment -name VERILOG_FILE ../Modules/jmp.v
-set_global_assignment -name VERILOG_FILE ../Modules/id.v
-set_global_assignment -name VERILOG_FILE ../Modules/flag_reg.v
-set_global_assignment -name VERILOG_FILE ../Modules/data_mem.v
-set_global_assignment -name VERILOG_FILE ../Modules/cpu_data.v
-set_global_assignment -name VERILOG_FILE ../Modules/cpu_ctrl.v
-set_global_assignment -name VERILOG_FILE ../Modules/alu.v
-set_global_assignment -name VERILOG_FILE ../Modules/acc.v
 set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
 set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
 set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
@@ -69,10 +54,7 @@ set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_
 set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_board_design_symbol
 set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_board_design_signal_integrity
 set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_board_design_boundary_scan
-set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
-set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
-set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
-set_location_assignment PIN_AA14 -to clk
+set_location_assignment PIN_AF14 -to clk
 set_location_assignment PIN_AE12 -to port_sw[7]
 set_location_assignment PIN_AD10 -to port_sw[6]
 set_location_assignment PIN_AC9 -to port_sw[5]
@@ -131,4 +113,27 @@ set_location_assignment PIN_AC25 -to arg_disp1[3]
 set_location_assignment PIN_AB28 -to arg_disp1[2]
 set_location_assignment PIN_AB25 -to arg_disp1[1]
 set_location_assignment PIN_AB22 -to arg_disp1[0]
+set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
+set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
+set_location_assignment PIN_V16 -to clk_sig
+set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
+set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
+set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_global_assignment -name VERILOG_FILE ../Modules/clk_div.v
+set_global_assignment -name VERILOG_FILE ../Modules/rom.v
+set_global_assignment -name VERILOG_FILE ../Modules/reg_f.v
+set_global_assignment -name VERILOG_FILE ../Modules/pc.v
+set_global_assignment -name VERILOG_FILE ../Modules/main_visual.v
+set_global_assignment -name VERILOG_FILE ../Modules/main.v
+set_global_assignment -name VERILOG_FILE ../Modules/lr.v
+set_global_assignment -name VERILOG_FILE ../Modules/led_disp.v
+set_global_assignment -name VERILOG_FILE ../Modules/jmp.v
+set_global_assignment -name VERILOG_FILE ../Modules/id.v
+set_global_assignment -name VERILOG_FILE ../Modules/flag_reg.v
+set_global_assignment -name VERILOG_FILE ../Modules/data_mem.v
+set_global_assignment -name VERILOG_FILE ../Modules/cpu_data.v
+set_global_assignment -name VERILOG_FILE ../Modules/cpu_ctrl.v
+set_global_assignment -name VERILOG_FILE ../Modules/alu.v
+set_global_assignment -name VERILOG_FILE ../Modules/acc.v
+set_location_assignment PIN_AB12 -to clk_en
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

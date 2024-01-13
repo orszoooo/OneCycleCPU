@@ -18,6 +18,7 @@ output reg flag_c; //Carry
 output reg flag_z; //Zero
 output reg flag_b; //Borrow
 
+
 initial begin
     flag_c = 1'b0;
     flag_z = 1'b0;
@@ -27,7 +28,6 @@ end
 always @(posedge clk) begin
     if(flag_rst) begin
         flag_c <= 1'b0;
-        flag_z <= 1'b0;
         flag_b <= 1'b0;
     end
     else begin 
@@ -35,12 +35,14 @@ always @(posedge clk) begin
             flag_c <= flag_c_in;
             flag_b <= flag_b_in;
         end
-        flag_z <= flag_z_in;
     end
 end
 
 always @(negedge clk) begin
+    if(flag_rst)
+        flag_z <= 1'b0;
+        
     flag_z <= flag_z_in;
 end
 
-endmodule
+endmodule 

@@ -4,6 +4,7 @@ module flag_reg_tb;
 
 reg CLK, RST;
 reg Cin, Zin, Bin;
+reg FLAG_CB_VALID;
 
 wire C; //Carry
 wire Z; //Zero
@@ -12,6 +13,7 @@ wire B; //Borrow
 flag_reg UUT(
     .clk(CLK),
     .flag_rst(RST),
+    .flag_cb_valid(FLAG_CB_VALID),
     .flag_c_in(Cin),
     .flag_z_in(Zin),
     .flag_b_in(Bin),
@@ -22,6 +24,7 @@ flag_reg UUT(
 
 initial begin
     $display("Simulation of %m started.");
+    FLAG_CB_VALID = 1'b1;
     RST = 1'b1;
     Cin = 1'b0;
     Zin = 1'b0;

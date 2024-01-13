@@ -81,7 +81,7 @@ id #(.WIDTH(WIDTH), .ALU_INSTR_WIDTH(ALU_INSTR_WIDTH), .REG_F_SEL_SIZE(REG_F_SEL
 id_module (
     .instr(rom_instr),
     .arg(rom_arg),
-    .z_flag(flag_z_out),
+    .z_flag(z_acc_flag_reg),
     .pc_rst(pc_rst),
     .pc_ld(pc_ld),
     .alu_out(alu_out),

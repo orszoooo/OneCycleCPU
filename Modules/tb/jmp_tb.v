@@ -12,6 +12,7 @@ wire [WIDTH-1:0] ADDRESS_OUT;
 
 jmp #(.WIDTH(WIDTH))
 UUT (
+    .clk(CLK),
     .jmp_mode(JMP_MODE),
     .base_reg_offset(BASE_REG_OFFSET),
     .base_reg_ld(BASE_REG_LD),

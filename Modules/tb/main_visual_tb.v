@@ -6,6 +6,7 @@ parameter DISP_WIDTH = 7;
 
 reg CLK;
 reg [WIDTH-1:0] PORT;
+reg CLK_DIV_EN;
 
 wire [WIDTH-1:0] PC;
 wire [DISP_WIDTH-1:0] INSTR1;
@@ -14,9 +15,11 @@ wire [DISP_WIDTH-1:0] ARG1;
 wire [DISP_WIDTH-1:0] ARG2;
 wire [DISP_WIDTH-1:0] ACC1;
 wire [DISP_WIDTH-1:0] ACC2;
+wire CLK_SIG;
 
 main_visual UUT (
     .clk(CLK),
+	.clk_div_en(CLK_DIV_EN),
 	.port_sw(PORT),
 	.pc_led(PC),
 	.instr_disp1(INSTR1),
@@ -24,12 +27,14 @@ main_visual UUT (
 	.arg_disp1(ARG1),
 	.arg_disp2(ARG2),	
 	.acc_disp1(ACC1),
-	.acc_disp2(ACC2)	
+	.acc_disp2(ACC2),
+	.clk_sig(CLK_SIG)
 );
 
 initial begin
     $display("Simulation of %m started.");
 	PORT = 8'h00;
+	CLK_DIV_EN = 1'b0;
     WAIT(100);
     $finish;
 end

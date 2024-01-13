@@ -6,7 +6,7 @@ module main_visual #(
 )
 (
     clk,
-    clk_en,
+    clk_div_en,
     port_sw,
 
     pc_led,
@@ -20,7 +20,7 @@ module main_visual #(
 );
 
 input clk;
-input clk_en;
+input clk_div_en;
 input [WIDTH-1:0] port_sw;
 
 output [WIDTH-1:0] pc_led;
@@ -39,7 +39,7 @@ wire [WIDTH-1:0] in_b_hex;
 wire clk_1Hz;
 
 clk_div clk1Hz( //50 MHz to 1Hz
-    .en(clk_en),
+    .en(clk_div_en),
     .clk_in(clk),
     .clk_out(clk_1Hz)
 );

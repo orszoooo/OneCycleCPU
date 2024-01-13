@@ -3,6 +3,7 @@
 module jmp #(
     parameter WIDTH = 8
 )(
+    clk,
     jmp_mode, // 00 - absolute and CALL, 01 - relative to base address register, 11 - RET
     base_reg_data,
     base_reg_ld,
@@ -11,6 +12,7 @@ module jmp #(
     out_addr
 );
 
+input clk;
 input [1:0] jmp_mode;
 input [WIDTH-1:0] base_reg_offset;
 input base_reg_ld;
@@ -20,8 +22,11 @@ output [WIDTH-1:0] out_addr;
 
 reg [WIDTH-1:0] BASE_ADDR = {WIDTH{1'b0}};
 
-always @(posedge base_reg_ld) begin
-	BASE_ADDR = base_reg_data;
+always @(posedge clk) begin
+    if(base_reg_ld)
+	    BASE_ADDR <= base_reg_data;
+    else
+        BASE_ADDR <= BASE_ADDR;
 end
 
 assign out_addr = (jmp_mode[0] ? ((jmp_mode[1] ? lr_addr : BASE_ADDR) + base_reg_offset) : base_reg_offset); 

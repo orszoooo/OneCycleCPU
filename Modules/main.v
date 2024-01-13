@@ -81,7 +81,7 @@ id #(.WIDTH(WIDTH), .ALU_INSTR_WIDTH(ALU_INSTR_WIDTH), .REG_F_SEL_SIZE(REG_F_SEL
 id_module (
     .instr(rom_instr),
     .arg(rom_arg),
-    .z_flag(z_acc_flag_reg),
+    .z_flag(flag_z_out),
     .pc_rst(pc_rst),
     .pc_ld(pc_ld),
     .alu_out(alu_out),
@@ -102,6 +102,7 @@ id_module (
 
 jmp #(.WIDTH(WIDTH))
 jmp_module (
+    .clk(clk),
     .jmp_mode(jmp_mode),
     .base_reg_data(base_reg_data),
     .base_reg_ld(base_reg_ld),

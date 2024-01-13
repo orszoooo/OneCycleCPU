@@ -85,6 +85,7 @@ id_module (
 
 jmp #(.WIDTH(WIDTH))
 jmp_module (
+    .clk(CLK),
     .jmp_mode(jmp_mode),
     .base_reg_data(base_reg_data),
     .base_reg_ld(base_reg_ld),

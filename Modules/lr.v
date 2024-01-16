@@ -19,11 +19,10 @@ initial begin
     LR_REG = {WIDTH{1'b0}};
 end
 
-always @(posedge ld) begin
-    LR_REG <= data;
-end
-
 always @(posedge clk) begin
+    if(ld)
+        LR_REG <= data;
+        
     out <= LR_REG;
 end
 

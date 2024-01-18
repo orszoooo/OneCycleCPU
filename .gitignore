@@ -6,7 +6,6 @@
 *.vcd
 *_sim
 c5_pin_model_dump.txt
-*.gtkw
 
 db/
 greybox_tmp/
